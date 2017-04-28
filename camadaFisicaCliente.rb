@@ -51,6 +51,7 @@ gargalo = transmissionClient
 # Cria uma conexao TCP para pegar maximo de transmissao
 server = TCPSocket.open(host, port)
 transmissionServer = Integer(server.gets)
+server.close()
 gargalo = transmissionClient < transmissionServer ? transmissionClient : transmissionServer
 
 # Verifica se existe espaco para os dados
@@ -64,6 +65,7 @@ end
 # Pega informacoes de host do servidor
 server = TCPSocket.open(host, port)
 macServer = server.gets
+server.close()
 
 # Le o arquivo que se quer transferir
 file = open('exemplo.pdf', "rb")
