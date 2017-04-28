@@ -1,0 +1,11 @@
+É necessário ter o ruby instalado nas máquinas de teste.
+
+É necessário instalar a biblioteca
+  gem install macaddr
+  
+Para executar basta rodar o servidor e o cliente:
+  ruby camadaFisicaServidor.rb
+  ruby camadaFisicaCliente.rb
+  
+O arquivo que será transmitido já se encontra na pasta, exemplo.pdf. Caso haja necessidade de trocar, o nome deve ser modificado no código do ruby camadaFisicaCliente.rb.
+ 
