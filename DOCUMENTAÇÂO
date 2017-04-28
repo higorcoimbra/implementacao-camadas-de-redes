@@ -1,11 +1,24 @@
-É necessário ter o ruby instalado nas máquinas de teste.
+Implementação da camada física do Projeto de Redes de Computadores I
 
-É necessário instalar a biblioteca
-  gem install macaddr
-  
-Para executar basta rodar o servidor e o cliente:
-  ruby camadaFisicaServidor.rb
-  ruby camadaFisicaCliente.rb
-  
-O arquivo que será transmitido já se encontra na pasta, exemplo.pdf. Caso haja necessidade de trocar, o nome deve ser modificado no código do ruby camadaFisicaCliente.rb.
- 
+Integrantes: 
+    Guilherme Medeiros, Higor Amorim, Matheus Rosa, Renan Nascimento.
+
+Pré requisitos:
+    É necessário ter o ruby instalado nas máquinas de teste.
+
+    É necessário instalar a biblioteca
+      gem install macaddr
+    
+    Para executar basta rodar o servidor e o cliente:
+      ruby camadaFisicaServidor.rb
+      ruby camadaFisicaCliente.rb
+    
+Decisões de Implementação:
+    O arquivo que será transmitido já se encontra na pasta, exemplo.pdf. Caso haja necessidade de trocar, o nome deve ser modificado no código do ruby camadaFisicaCliente.rb.
+
+    As decisões mais importantes para essa camada foram:
+      Comunicação entre o cliente e o servidor para estabelecer o tamanho máximo de cada pacote.
+      Comunicação entre o cliente e o servidor para estabelecer o mac de origem e o mac de destino. 
+      Leitura do arquivo a ser transferido e tranformação do mesmo em bits, por meio de uma "multiplexação", em que cada caractere lido é transformado em um número binário de 10 bits. 
+      Dpois os dados em binário, com base no limite de tamanho, são escritos no txt que representa o pacote e logo após enviados para o destino.
+      A colisão é gerada por meio de um numero aleatorio, com uma probabilidade de 90% e com um tempo de espera também aleatório de 0 a 1s.
