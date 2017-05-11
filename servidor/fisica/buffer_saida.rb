@@ -39,9 +39,17 @@ headerSize = 14
 
 # Variaveis de configuracao de host
 host = '127.0.0.1'
-port = 8001
+port = 8004
+app2physical_port = 8003
 macClient = Mac.addr
 macServer = 'aa:aa:aa:aa:aa:aa'
+
+#Cria um socket para transmissao da mensagem HTTP do processo cliente da aplicacao (navegador)..
+#..para a camada fisica
+interface = TCPServer.open(app2physical_port)
+application = interface.accept
+mensagem = application.read()
+puts(mensagem)
 
 # Variaveis de configuracao da transmissao
 transmissionClient = 100
@@ -67,16 +75,16 @@ server = TCPSocket.open(host, port)
 macServer = server.gets
 server.close()
 
-# Le o arquivo que se quer transferir
-file = open('./exemplo.pdf', "rb")
 
 # Envio dos pacotes - Transformacao em binario, formatacao e envio
 # [ MAC Destino - MAC Origem - Ether type | Dados ]
+
 macClientBit = getMacBit(macClient)
 macServerBit = getMacBit(macServer)
 etherType = "0000"
 ends = false
 
+i = 0
 while not ends
 	
 	# Cria pacote
@@ -87,12 +95,13 @@ while not ends
 	pacote.print(etherType)
 	
 	# - Escreve dados do pacote
-	for i in 0..dataSize
-		part = file.read(1)
+	for j in 0..dataSize
+		part = mensagem[i]
 		if part == nil
 			ends = true
 			break
 		end
+		i += 1
 		pacote.print(part.ord.to_s(2).rjust(10, '0'))
 	end
 	pacote.close()
