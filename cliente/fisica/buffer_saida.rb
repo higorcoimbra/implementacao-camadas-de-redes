@@ -48,8 +48,8 @@ macServer = 'aa:aa:aa:aa:aa:aa'
 #..para a camada fisica
 interface = TCPServer.open(app2physical_port)
 application = interface.accept
-mensagemHTTP = application.read()
-puts(mensagemHTTP)
+mensagem = application.read()
+puts(mensagem)
 
 # Variaveis de configuracao da transmissao
 transmissionClient = 100
@@ -84,6 +84,7 @@ macServerBit = getMacBit(macServer)
 etherType = "0000"
 ends = false
 
+i = 0
 while not ends
 	
 	# Cria pacote
@@ -94,12 +95,14 @@ while not ends
 	pacote.print(etherType)
 	
 	# - Escreve dados do pacote
-	for i in 0..dataSize
-		part = mensagemHTTP[i]
+	for j in 0..dataSize
+		part = mensagem[i]
 		if part == nil
 			ends = true
+			puts(part)
 			break
 		end
+		i += 1
 		pacote.print(part.ord.to_s(2).rjust(10, '0'))
 	end
 	pacote.close()

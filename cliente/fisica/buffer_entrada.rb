@@ -6,9 +6,17 @@
 require 'socket'
 require 'macaddr'
 
+# Conexao TCP e envio de mensagem
+def tcpConnect(host, port, mensagem)
+	server = TCPSocket.open(host, port)
+	server.puts(mensagem)
+	server.close()
+end
+
 # Variaveis de configuracao de host
 host = '127.0.0.1'
-port = 8001
+port = 8004
+physical2app_port = 8005
 
 # Variaveis de transmissao
 transmissionServer = 100
@@ -60,3 +68,6 @@ while (1)
 	end
 
 end
+
+destino.close()
+tcpConnect(host,physical2app_port,File.read("destino"))
