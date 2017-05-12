@@ -31,8 +31,6 @@ socket_close($spawn);
 
 list ($method, $filename) = split(' ',$mensagemHTTP);
 
-echo $filename."\n";
-
 $filename = str_replace("/","../",$filename);
 
 $fp = fopen($filename, "r");

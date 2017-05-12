@@ -1,6 +1,6 @@
 <?php
 $host = "127.0.0.1";
-$http_port = 80;
+$http_port = 8080;
 $app2physical_port = 8001;
 $physical2app_port = 8005;
 
@@ -22,7 +22,6 @@ $valid = socket_listen($browser, 1) or die("Nao foi possivel estabelecer a escut
 $spawn_browser = socket_accept($browser) or die("Nao foi possivel conectar\n");
 //le a mensagem de requisição HTTP do navegador
 $mensagemHTTP = socket_read($spawn_browser, $http_port) or die("Nao foi possivel ler a entrada\n");
-socket_close($spawn_browser);
 
 /*
  * Transmitindo mensagem HTTP a camada fisica
@@ -50,25 +49,12 @@ $file = socket_read($spawn, $physical2app_port) or die("Nao foi possivel ler a e
 socket_close($socket);
 socket_close($spawn);
 
-echo $file."\n";
-
 /*
  * Transmitindo mensagem de resposta HTTP para o navegador
  */
 
+socket_write($spawn_browser, $file);
 
-$head = "GET / HTTP/1.1"."\r\n".
-            "Upgrade: WebSocket"."\r\n".
-            "Connection: Upgrade"."\r\n".
-            "Origin: 127.0.0.1"."\r\n".
-            "Host: $host"."\r\n".
-            "Content-Length: ".strlen($file)."\r\n"."\r\n";
+socket_close($spawn_browser);
 
-
-$socket = socket_create(AF_INET, SOCK_STREAM, 0) or die("Nao foi possivel criar o socket\n");
-$valid = socket_connect($socket, $host, $http_port) or die ("Nao foi possivel conectar ao navegador");
-$valid = socket_write($socket, $head) or die ("Nao foi possivel enviar mensagem");
-socket_close($socket);
-$valid = socket_write($socket, "\x00$data\xff" ) or die ("Nao foi possivel enviar mensagem");
-socket_close($socket);
 ?>
