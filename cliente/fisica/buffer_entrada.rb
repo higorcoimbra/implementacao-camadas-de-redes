@@ -39,6 +39,8 @@ client.close
 destino = File.new("destino", "w")
 
 # Conexao para pegar o pacote
+package_index = 1
+puts("\n\n")
 while (1)
 
 	client = server.accept
@@ -51,7 +53,7 @@ while (1)
 	end
 
 	# Pega apenas os dados retirando o cabecalho
-	dados = pacote[100..pacote.length]
+	dados = pacote[164..pacote.length]
 
 	# Extrai bytes dos bits
 	i = 0
@@ -66,8 +68,13 @@ while (1)
 		# Escreve no arquivo de destino
 		destino.print(byte.to_i(2).chr)
 	end
+	puts("Pacote "+package_index.to_s+" recebido com sucesso\n")
+	package_index += 1
 
 end
 
 destino.close()
+puts("\n\nArquivo HTML recebido com sucesso do buffer de saida do servidor\n\n")
+
 tcpConnect(host,physical2app_port,File.read("destino"))
+puts("Envio do arquivo HTML para camada de aplicacao do cliente\n\n")

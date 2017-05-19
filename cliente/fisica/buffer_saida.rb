@@ -35,7 +35,7 @@ end
 
 # Variaveis uteis
 infinito = 0x3f3f3f3f
-headerSize = 14
+headerSize = 22
 
 # Variaveis de configuracao de host
 host = '127.0.0.1'
@@ -49,7 +49,7 @@ macServer = 'aa:aa:aa:aa:aa:aa'
 interface = TCPServer.open(app2physical_port)
 application = interface.accept
 mensagem = application.read()
-puts(mensagem)
+puts("\n\nMensagem HTTP recebido com sucesso da camada de aplicacao cliente\n\n")
 
 # Variaveis de configuracao da transmissao
 transmissionClient = 100
@@ -60,7 +60,11 @@ gargalo = transmissionClient
 server = TCPSocket.open(host, port)
 transmissionServer = Integer(server.gets)
 server.close()
+puts("Estabelecimento de conexao com o buffer de entrada do servidor ...\n")
+puts("\nTMP do Cliente: "+transmissionClient.to_s+" bytes\n")
+puts("TMP do Servidor: "+transmissionServer.to_s+" bytes\n")
 gargalo = transmissionClient < transmissionServer ? transmissionClient : transmissionServer
+puts("TMP definido: "+gargalo.to_s+" bytes\n\n")
 
 # Verifica se existe espaco para os dados
 dataSize = gargalo - headerSize
@@ -77,22 +81,34 @@ server.close()
 
 
 # Envio dos pacotes - Transformacao em binario, formatacao e envio
-# [ MAC Destino - MAC Origem - Ether type | Dados ]
+# [ Preambulo - SOF - MAC Destino - MAC Origem - Ether type - Dados ]
 
+preambulo="10101010101010101010101010101010101010101010101010101010"
+sof="10101011"
 macClientBit = getMacBit(macClient)
 macServerBit = getMacBit(macServer)
 etherType = "0000"
 ends = false
 
 i = 0
+package_index = 1
 while not ends
 	
 	# Cria pacote
 	# - Escreve cabecalho
+	puts("---------------------------------------")
+	puts("Enviando pacote "+package_index.to_s+" ...")
 	pacote = File.new("pacote.txt", "w")
+	pacote.print(preambulo)
+	pacote.print(sof)
 	pacote.print(macClientBit)
 	pacote.print(macServerBit)
 	pacote.print(etherType)
+	puts("Preambulo: "+preambulo+"\n")
+	puts("SOF: "+sof+"\n")
+	puts("MAC address do cliente: "+macClient.to_s+"\n")
+	puts("MAC address do servidor: "+macServer.to_s)
+	puts("Ether Type: "+etherType)
 	
 	# - Escreve dados do pacote
 	for j in 0..dataSize
@@ -111,16 +127,23 @@ while not ends
 	pdu = File.read('pacote.txt')
 
 	# Verificacao se ha colisao
-	colisao = rand(1...100) > 90
+	colisao = rand(1...100) > 70
 	while colisao
+		puts("Ocorreu colisao no envio do pacote "+package_index.to_s+"\n")
 		sleep(rand(1...100)/100)
-		colisao = rand(1...100) > 90
+		puts("Reenvio do pacote "+package_index.to_s+"\n")
+		colisao = rand(1...100) > 70
 	end
 
 	# Envio da pdu
 	tcpConnect(host, port, pdu)
+	puts("Envio do pacote "+package_index.to_s+" realizado com sucesso\n")
+	package_index += 1
 
 end
 
 # Encerramento da transferencia
 tcpConnect(host, port, "acabou")
+
+puts("---------------------------------------")
+puts("\n\nEnvio da mensagem HTTP para o buffer de entrada do servidor\n\n")
