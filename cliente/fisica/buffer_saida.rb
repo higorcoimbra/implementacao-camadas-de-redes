@@ -40,16 +40,16 @@ headerSize = 22
 # Variaveis de configuracao de host
 host = '127.0.0.1'
 port = 8000
-app2physical_port = 8001
+transport2physical_port = 8006
 macClient = Mac.addr
 macServer = 'aa:aa:aa:aa:aa:aa'
 
 #Cria um socket para transmissao da mensagem HTTP do processo cliente da aplicacao (navegador)..
 #..para a camada fisica
-interface = TCPServer.open(app2physical_port)
+interface = TCPServer.open(transport2physical_port)
 application = interface.accept
 mensagem = application.read()
-puts("\n\nMensagem HTTP recebido com sucesso da camada de aplicacao cliente\n\n")
+puts("\n\nMensagem HTTP recebido com sucesso da camada de transporte cliente\n\n")
 
 # Variaveis de configuracao da transmissao
 transmissionClient = 100

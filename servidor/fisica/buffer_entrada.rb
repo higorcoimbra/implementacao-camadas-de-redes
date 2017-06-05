@@ -16,7 +16,7 @@ end
 # Variaveis de configuracao de host
 host = '127.0.0.1'
 port = 8000
-physical2app_port = 8002
+physical2transport_port = 8002
 
 # Variaveis de transmissao
 transmissionServer = 120
@@ -76,6 +76,6 @@ end
 destino.close()
 puts("\n\nMensagem HTTP recebida com sucesso do buffer de saida do cliente\n\n")
 
-tcpConnect(host,physical2app_port,File.read("destino"))
+tcpConnect(host,physical2transport_port,File.read("destino"))
 puts("Envio da mensagem HTTP para camada de aplicacao do servidor\n\n")
 

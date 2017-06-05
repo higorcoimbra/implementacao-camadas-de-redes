@@ -40,15 +40,15 @@ headerSize = 22
 # Variaveis de configuracao de host
 host = '127.0.0.1'
 port = 8004
-app2physical_port = 8003
+transport2physical_port = 8008
 macClient = Mac.addr
 macServer = 'aa:aa:aa:aa:aa:aa'
 
 #Cria um socket para receber a mensagem HTTP da aplicacao do servidor
-interface = TCPServer.open(app2physical_port)
+interface = TCPServer.open(transport2physical_port)
 application = interface.accept
 mensagem = application.read()
-puts("\n\nArquivo HTML recebido com sucesso da camada de aplicacao do servidor\n\n")
+puts("\n\nArquivo HTML recebido com sucesso da camada de transporte do servidor\n\n")
 
 # Variaveis de configuracao da transmissao
 transmissionClient = 120

@@ -1,8 +1,7 @@
 <?php
 $host = "127.0.0.1";
-$http_port = 8080; // Porta de comunicacao com o browser
-$app2physical_port = 8001;
-$physical2app_port = 8005;
+$http_port = $argv[1]; // Porta de comunicacao com o browser
+$transport_app_port_communication = 8001;
 
 /*
  * Recebe mensagem HTTP do navegador
@@ -29,29 +28,31 @@ echo $mensagemHTTP."\n";
  * Transmitindo mensagem HTTP a camada fisica
  */
 
-echo "Envio da mensagem HTTP da camada de aplicacao cliente para buffer de saida do cliente\n\n";
-$socket = socket_create(AF_INET, SOCK_STREAM, 0) or die("Nao foi possivel criar o socket\n");
-$valid = socket_connect($socket, $host, $app2physical_port) or die ("Nao foi possivel conectar ao navegador");
+echo "Envio da mensagem HTTP da camada de aplicacao cliente para camada de transporte do cliente\n\n";
+$socket = socket_create(AF_INET, SOCK_DGRAM, 0) or die("Nao foi possivel criar o socket\n");
+$valid = socket_connect($socket, $host, $transport_app_port_communication) or die ("Nao foi possivel conectar a camada de transporte\n");
 $valid = socket_write($socket, $mensagemHTTP) or die ("Nao foi possivel enviar mensagem");
 socket_close($socket);
 
 /*
- * Recebendo mensagem de resposta HTTP da camada fisica
+ * Recebendo mensagem de resposta HTTP da camada de transporte
  */
 
 $socket = socket_create(AF_INET, SOCK_STREAM, 0) or die("Nao foi possivel criar o socket\n");
 // Ligando socket a porta
-$valid = socket_bind($socket, $host, $physical2app_port) or die("Nao foi possivel ligar o socket a porta\n");
+$valid = socket_bind($socket, $host, $transport_app_port_communication) or die("Nao foi possivel ligar o socket a porta\n");
 // Começa a escutar por conexões na porta 8005
 //o segundo parametro do socket_listen e o numero conexoes simultaneas nessa porta
 $valid = socket_listen($socket, 1) or die("Nao foi possivel estabelecer a escuta do socket\n");
 // Aceita conexões na porta 8005
 $spawn = socket_accept($socket) or die("Nao foi possivel conectar\n");
 // Le a mensagem de resposta HTTP do buffer de entrada do cliente
-$file = socket_read($spawn, $physical2app_port) or die("Nao foi possivel ler a entrada\n");
+$file = socket_read($spawn, $transport_app_port_communication) or die("Nao foi possivel ler a entrada\n");
 socket_close($socket);
 socket_close($spawn);
 echo "Arquivo HTML recebido com sucesso do buffer de entrada\n\n";
+
+echo $file;
 
 /*
  * Transmitindo mensagem de resposta HTTP para o navegador

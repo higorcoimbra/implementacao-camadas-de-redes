@@ -16,7 +16,7 @@ end
 # Variaveis de configuracao de host
 host = '127.0.0.1'
 port = 8004
-physical2app_port = 8005
+physical2transport_port = 8009
 
 # Variaveis de transmissao
 transmissionServer = 100
@@ -76,5 +76,5 @@ end
 destino.close()
 puts("\n\nArquivo HTML recebido com sucesso do buffer de saida do servidor\n\n")
 
-tcpConnect(host,physical2app_port,File.read("destino"))
-puts("Envio do arquivo HTML para camada de aplicacao do cliente\n\n")
+tcpConnect(host,physical2transport_port,File.read("destino"))
+puts("Envio do arquivo HTML para camada de transporte do cliente\n\n")
