@@ -13,7 +13,7 @@ import (
 /* A Simple function to verify error */
 func CheckError(err error) {
     if err  != nil {
-        fmt.Println("Error: " , err)
+        print("Error: " , err)
         os.Exit(0)
     }
 }
@@ -56,7 +56,7 @@ func makeSegment(header string, data string)(string){
 }
 
 func udt_send(segment string,transport2physical_address string){
-    fmt.Println("Enviando pacote para a camada física...")
+    print("Enviando pacote para a camada física...")
     physical_port, err := net.ResolveTCPAddr("tcp", transport2physical_address)
     CheckError(err)
     physical_connection, err := net.DialTCP("tcp", nil, physical_port)
@@ -66,36 +66,39 @@ func udt_send(segment string,transport2physical_address string){
     physical_connection.Close()
 }
 
-func rdt_rcv(physical2transport_address string)(intervalo int, pacote string){
-    read_timeout := time.Nanosecond
-    physical_content := make([]byte,1024)
-    inicio := time.Now().Nanosecond()
+func rdt_rcv(physical2transport_address string)(intervalo int64, pacote int){
+    //read_timeout := time.Nanosecond
+    //physical_content := make([]byte,1024)
+    inicio := time.Now().UnixNano()
     
-    fmt.Println("Recebendo ACK da camada física...")
-    physical2transport_port,err := net.ResolveTCPAddr("tcp",physical2transport_address)
-    CheckError(err)
-    physical2transport_listener, err := net.ListenTCP("tcp", physical2transport_port)
-    CheckError(err)
-    physical2transport_connection, err := physical2transport_listener.Accept() 
-    CheckError(err)
-    physical2transport_connection.SetReadDeadline(time.Now().Add(read_timeout))
-    _,err = physical2transport_connection.Read(physical_content)
-    CheckError(err)
+    //print("Recebendo ACK da camada física...")
+    // physical2transport_port,err := net.ResolveTCPAddr("tcp",physical2transport_address)
+    // CheckError(err)
+    // physical2transport_listener, err := net.ListenTCP("tcp", physical2transport_port)
+    // CheckError(err)
+    // physical2transport_connection, err := physical2transport_listener.Accept() 
+    // CheckError(err)
+    // physical2transport_connection.SetReadDeadline(time.Now().Add(read_timeout))
+    //_,err = physical2transport_connection.Read(physical_content)
+    //CheckError(err)
 
-    intervalo = time.Now().Nanosecond() - inicio
-    return intervalo, string(physical_content)
+    time.Sleep(400000000)
+    pacote = 1
+    intervalo = time.Now().UnixNano() - inicio
+    return intervalo, pacote
 }
 
 func printBuffer(buffer []string){
-    fmt.Println("\nRDT_BUFFER:")
+    print("\nRDT_BUFFER:")
     for i := 0; i < 5; i++ {
-        fmt.Println(buffer[i])
+        print(buffer[i])
     }
-    fmt.Println("END OF BUFFER\n")
+    print("END OF BUFFER\n")
 }
 
 
 func main() {
+	print := fmt.Println
 
     var opcao_trasmissao string
     opcao_trasmissao = "tcp"
@@ -123,15 +126,15 @@ func main() {
     if opcao_trasmissao == "udp" {
 
         //formando pacote na camada de transporte
-        //fmt.Println("")
-        //fmt.Println("")
+        //print("")
+        //print("")
         transport_header = makeTransportHeader(source_port,destination_port,buffer_size)
         pdu_content.WriteString(transport_header.String())
         pdu_content.WriteString(application_content)
-        //fmt.Println(pdu_content.String())
+        //print(pdu_content.String())
 
         //enviando pacote a camada física
-        fmt.Println("Enviando pacote para a camada física...")
+        print("Enviando pacote para a camada física...")
         physical_port, err := net.ResolveTCPAddr("tcp", transport2physical_address)
         CheckError(err)
         physical_connection, err := net.DialTCP("tcp", nil, physical_port)
@@ -142,7 +145,7 @@ func main() {
 
         //recebendo pacote da física pra passar pra aplicação
         physical_content := make([]byte,1024)
-        fmt.Println("Recebendo pacote da camada física...")
+        print("Recebendo pacote da camada física...")
         physical2transport_port,err := net.ResolveTCPAddr("tcp",physical2transport_address)
         CheckError(err)
         physical2transport_listener, err := net.ListenTCP("tcp", physical2transport_port)
@@ -151,8 +154,8 @@ func main() {
         CheckError(err)
         size,err := physical2transport_connection.Read(physical_content)
         CheckError(err)
-        fmt.Println(string(physical_content[0:size]))
-        fmt.Println("Pacote recebido com sucesso!")
+        print(string(physical_content[0:size]))
+        print("Pacote recebido com sucesso!")
 
         //enviando resposta HTTP pra camada de aplicação
         app_content := string(physical_content[14:])
@@ -173,17 +176,19 @@ func main() {
         base := 1
         string_slice := make([]byte,0)
         rdt_buffer := make([]string, 0)
-        timeout := 100000000000
+        timeout := int64(1000000000)
+        stop_timer := true
 
-        //var ack string
-        //var interval int
+        var ack int
         var data string
         var segment string
         var header bytes.Buffer
-        var total_interval int
-        var start_timer int
-        var current int
-        //var stop_timer time.Time
+
+        var current int64
+        var total_interval int64
+        var start_timer int64
+        var interval int64
+
         j := 0
         for i := 0; i < len(application_content); i++ {
             string_slice = append(string_slice,application_content[i])
@@ -196,12 +201,15 @@ func main() {
         }
 
         window_buffer := make([]string,WINDOW_SIZE)
-        //loop principal da máquina de estados
-
+        /*
+        	Maquina de estados para o remetente
+        */
         for ; len(rdt_buffer) > 30; {
             data = rdt_buffer[0]
 
-            // envia pacote caso o numero de sequencia esteja dentro da janela
+            /*
+				Envio de dados caso o proximo pacote esteja dentro da janela
+            */
             if(nextseqnum < base+WINDOW_SIZE){
                 rdt_buffer = rdt_buffer[1:]
                 header = makeTransportHeaderTCP(source_port,destination_port,nextseqnum)
@@ -209,32 +217,48 @@ func main() {
                 //udt_send(segment,transport2physical_address)
                 window_buffer = append(window_buffer,segment)
                 if(base == nextseqnum){
-                    start_timer = time.Now().Nanosecond()*0
-                    total_interval = time.Now().Nanosecond()*0
+                	stop_timer = false
+                    start_timer = time.Now().UnixNano()
+                    total_interval = 0
                 }
                 nextseqnum = nextseqnum + 1
             }
 
-            // verifica se o timeout do pacote base foi excedido
-            current = time.Now().Nanosecond()
-            current = current - total_interval
-            if(current - start_timer > timeout) {
-                fmt.Println("Tempo excedido")
-                fmt.Println(window_buffer[0])
-                start_timer = time.Now().Nanosecond()*0
-                total_interval = time.Now().Nanosecond()*0
-                // for i := 0; i < nextseqnum; i++ {
-                //     udt_send(window_buffer[i],transport2physical_address)
-                // }
+            /*
+				Verificacao do timeout do pacote base
+            */
+			if (stop_timer == true) {
+				current = 0
+			} else {
+            	current = time.Now().UnixNano()
+            }
+            print(ack," ",current," ",start_timer," ",current-start_timer," ",total_interval)
+
+            if(current - start_timer -total_interval > timeout) {
+                print("Tempo excedido")
+                print(window_buffer[0])
+                start_timer = time.Now().UnixNano()
+                total_interval = 0
+                //for i := 0; i < nextseqnum; i++ {
+                //    udt_send(window_buffer[i],transport2physical_address)
+                //}
             }
 
-            fmt.Println(current)
+            /*
+				Verificacao de recepcao de ack do destino
+            */
+            interval, ack = rdt_rcv(physical2transport_address)
+            total_interval = total_interval + interval
+            if ack != -1 {
+            	base = ack+1
+            	if base == nextseqnum {
+            		stop_timer = true
+            	} else {
+            		start_timer = time.Now().UnixNano()
+            	}
+            }
 
             time.Sleep(timeSleep)
-
-            // verifica se chegou um ack
-            //interval, _ = rdt_rcv(physical2transport_address)
-            //total_interval = total_interval + interval
         }   
     }
 }

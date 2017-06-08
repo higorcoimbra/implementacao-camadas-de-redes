@@ -1,0 +1,356 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"pr",
+				"prob"
+			],
+			[
+				"ma",
+				"main\tmain()"
+			],
+			[
+				"prin",
+				"println"
+			],
+			[
+				"g",
+				"grafo"
+			],
+			[
+				"Pat",
+				"PatNoInt"
+			],
+			[
+				"pala",
+				"palavraCompleta"
+			],
+			[
+				"pal",
+				"palavraCompleta"
+			],
+			[
+				"mul",
+				"multiplexaPalavra"
+			],
+			[
+				"nb",
+				"nbitsChave"
+			],
+			[
+				"char",
+				"charAt"
+			],
+			[
+				"cria",
+				"criaNoInt"
+			],
+			[
+				"cha",
+				"charAt"
+			],
+			[
+				"insere",
+				"insereInterno"
+			],
+			[
+				"no",
+				"non-margin"
+			],
+			[
+				"padd",
+				"padding-right"
+			],
+			[
+				"pad",
+				"padding"
+			],
+			[
+				"margin",
+				"margin-bottom"
+			],
+			[
+				"post",
+				"post-container"
+			],
+			[
+				"bord",
+				"border"
+			],
+			[
+				"back",
+				"background-color"
+			],
+			[
+				"hr",
+				"hr-black"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/matheus/cefet/Maratona/teamNULL/hackerearth/rhezoandprime.cpp",
+		"/home/matheus/cefet/Maratona/teamNULL/hackerearth/xsqaureandcoin.cpp",
+		"/home/matheus/cefet/Maratona/teamNULL/hackerearth/intelligentgirl.cpp",
+		"/home/matheus/cefet/Maratona/teamNULL/hackerearth/samuandshop.cpp",
+		"/home/matheus/cefet/Maratona/teamNULL/hackerearth/choosingjudges.cpp",
+		"/home/matheus/cefet/Maratona/teamNULL/hackerearth/winthegame.cpp",
+		"/home/matheus/cefet/Maratona/teamNULL/hackerearth/wackyworkouts.cpp",
+		"/home/matheus/cefet/Maratona/teamNULL/hackerearth/numberRs.cpp",
+		"/home/matheus/cefet/Maratona/teamNULL/hackerRank/sherlockCost.cpp",
+		"/home/matheus/cefet/Maratona/teamNULL/hackerRank/candies.cpp",
+		"/home/matheus/cefet/Maratona/teamNULL/codeforces/711C.cpp",
+		"/home/matheus/cefet/Maratona/teamNULL/uri/1522.cpp",
+		"/home/matheus/cefet/Maratona/teamNULL/uri/2241.cpp",
+		"/home/matheus/cefet/Maratona/teamNULL/uri/G/output/G_33",
+		"/home/matheus/cefet/Maratona/teamNULL/811C.cpp",
+		"/home/matheus/cefet/Maratona/teamNULL/codeforces/811C.cpp",
+		"/home/matheus/cefet/Maratona/teamNULL/codeforces/772C.cpp",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04 atrasada/Pratica3/src/pratica3/Pratica3.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Prática03/src/prática03/Prática03.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04 atrasada/drive-download-20170520T022805Z-001/AEDS Prática03/src/prática03/Prática03.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04 atrasada/TP4/main.cpp",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04 atrasada/Pratica 04/Pratica04/src/pratica04/ArvoreB.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04 atrasada/drive-download-20170520T022805Z-001/AEDS Prática04/Prática04/src/prática04/Prática04.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Pratica03/HeapSort/Pratica3/src/pratica3/Pratica3.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04 atrasada/Pratica - 03/Pratica03/src/pratica03/JHeap.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04 atrasada/Pratica - 03/Pratica03/src/pratica03/JHeapSort.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04 atrasada/Pratica 04/Pratica04/src/pratica04/Pratica04.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04 atrasada/Pratica - 03/Pratica03/src/pratica03/Pratica03.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04 atrasada/Pratica 04/Pratica04/src/pratica04/Item.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04 atrasada/TP3/main.cpp",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/pratica3_pratica4_ViniciusHenriqueSilveira/pratica3/codigo/src/Heapsort/Main.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/pratica3_pratica4_ViniciusHenriqueSilveira/pratica4/codigo/src/Main/Main.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Pratica-3-4-TulioAssis/Pratica04/Pratica4/src/pratica4/Pratica4.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Pratica-3-4-TulioAssis/Pratica03/Pratica3/src/pratica3/Pratica3.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Pratica-3-4-TulioAssis/Pratica04/Pratica4/src/pratica4/ArvoreSBB.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Praticas3e4-SarahRodrigues/Pratica04/src/pratica04/Pratica04.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Praticas3e4-SarahRodrigues/Pratica03/src/pratica03/Pratica03.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Práticas 03e04/Prática04/src/prática04/principal.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Práticas 03e04/Prática03/src/Item/principal.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Projeto3/src/projeto3/Projeto3.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Projeto3/src/projeto3/JHeap.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Pr�tica03/src/pratica03/Pratica03.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Pratica03e04_JoaoSoares/Pratica03/src/pratica03/Pratica03.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Praticas 03 e 04 - Juliane Guedes Pascoal/pratica04/src/pratica04/principal.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Pratica3/src/pratica3/Pratica3.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Pratica4/src/pratica4/ArvoreB.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Pratica4/src/pratica4/Pratica4.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Pr�tica03/src/pr�tica03/JHeapSort.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Pratica 3 e 4/Pratica 4/Pratica 4/src/pratica/pkg4/ArvoreB.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Pratica 3 e 4/Pratica 4/Pratica 4/src/pratica/pkg4/Pratica4.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Praticas 03 e 04 - Juliane Guedes Pascoal/pratica04/src/pratica04/ArvoreB.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Pr�tica03/src/pratica03/Item.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Pr�tica03/src/pratica03/JHeap.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Pr�tica03/src/pratica03/JHeapSort.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Pratica03/src/pratica03/Main.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Pratica03/src/item/Item.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Pr�tica03/src/pr�tica03/Pr�tica03.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Praticas3e4/Pratica_4/Pratica04/src/pratica04/ArvoreB.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Pratica3_4/Pratica03/src/Heap/JHeapSort.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Pratica3_4/Pratica03/src/Item/Item.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Pratica3_4/Pratica03/src/Heap/JHeap.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Pratica3_4/Pratica04/src/Resultado.txt",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Pratica3_4/Pratica03/src/pratica3/Pratica3.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Pratica3_4/Pratica03/src/pratica3/Pratica3.",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/arthu/Prática04/src/prática04/ARvoreB.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/arthu/Prática04/src/prática04/Prática04.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/arthu/Prática04/src/prática04/ArvoreSBB.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/arthu/Prática03/src/prática03/Prática03.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/arthu/Prática03/src/prática03/JHeap.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/tmp/pratica03/JHeapSort.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/tmp/pratica03/Pratica03.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/tmp/Pratica03.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/tmp/JHeapSort.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/tmp/Item.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/tmp/JHeap.java",
+		"/home/matheus/cefet/Maratona/Estudos/fib_it.cpp",
+		"/home/matheus/cefet/Monitoria/Pratica5/Pratica5.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Praticas3e4_AnaPaulaVictoy/Pratica03/src/pratica03/Pratica03.java",
+		"/home/matheus/cefet/Monitoria/Pratica3/Pratica3.java",
+		"/home/matheus/cefet/Monitoria/TP1/TrabalhoPratico1.java",
+		"/tmp/mozilla_matheus0/prog5.13-18/cap5/ArvorePatricia.java",
+		"/home/matheus/cefet/Maratona/teamNULL/uri/2446.cpp",
+		"/home/matheus/cefet/Maratona/teamNULL/uva/10139.cpp",
+		"/home/matheus/cefet/Maratona/teamNULL/spoj/histogra.cpp",
+		"/home/matheus/cefet/Maratona/teamNULL/spoj/in",
+		"/home/matheus/cefet/semestres/6/laboratorios/engenhariaSoftware/HiFit/HiFit/usuario/views.py",
+		"/home/matheus/cefet/semestres/6/laboratorios/engenhariaSoftware/Bkp20_05/HiFit/static/templates/footer.html",
+		"/home/matheus/cefet/semestres/6/laboratorios/engenhariaSoftware/HiFit/HiFit/static/templates/footer.html",
+		"/home/matheus/cefet/semestres/6/laboratorios/engenhariaSoftware/HiFit/HiFit/static/templates/perfil.html",
+		"/home/matheus/cefet/semestres/6/laboratorios/engenhariaSoftware/Bkp20_05/HiFit/static/templates/base.html",
+		"/home/matheus/cefet/semestres/6/laboratorios/engenhariaSoftware/HiFit/HiFit/static/templates/base.html",
+		"/home/matheus/cefet/semestres/6/laboratorios/engenhariaSoftware/Bkp20_05/HiFit/static/templates/perfil.html"
+	],
+	"find":
+	{
+		"height": 23.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"a",
+			"}",
+			"{",
+			"(",
+			")",
+			"int",
+			"front",
+			"push",
+			"pop",
+			"top"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"p",
+			"long long",
+			"back",
+			"push_back",
+			"pop_back",
+			"front"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": true,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "UDPClient.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": false,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": false,
+	"side_bar_width": 304.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
