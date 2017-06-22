@@ -33,6 +33,20 @@ def tcpConnect(host, port, mensagem)
 end
 
 
+def rcv_pkt(transport2physical_port)
+	#Cria um socket para transmissao da mensagem HTTP do processo cliente da aplicacao (navegador)..
+	#..para a camada fisica
+	print("Aguardando conexao da camada de transporte na porta ", transport2physical_port)
+	interface = TCPServer.open(transport2physical_port)
+	application = interface.accept
+	print("Aguardando recebimento de pacote na porta ", transport2physical_port)
+	mensagem = application.read()
+	puts("\n\nSegmento recebido com sucesso da camada de transporte cliente\n\n")
+	interface.close()
+	return mensagem
+end
+
+
 # Variaveis uteis
 infinito = 0x3f3f3f3f
 headerSize = 22
@@ -44,15 +58,8 @@ transport2physical_port = 8006
 macClient = Mac.addr
 macServer = 'aa:aa:aa:aa:aa:aa'
 
-#Cria um socket para transmissao da mensagem HTTP do processo cliente da aplicacao (navegador)..
-#..para a camada fisica
-interface = TCPServer.open(transport2physical_port)
-application = interface.accept
-mensagem = application.read()
-puts("\n\nMensagem HTTP recebido com sucesso da camada de transporte cliente\n\n")
-
 # Variaveis de configuracao da transmissao
-transmissionClient = 100
+transmissionClient = 40
 transmissionServer = infinito
 gargalo = transmissionClient
 
@@ -103,60 +110,71 @@ ends = false
 	Desta forma mantemos a estrutura atual de envio da 
 =end
 
-i = 0
 package_index = 1
-while not ends
-	
-	# Cria pacote
-	# - Escreve cabecalho
-	puts("---------------------------------------")
-	puts("Enviando pacote "+package_index.to_s+" ...")
-	pacote = File.new("pacote.txt", "w")
-	pacote.print(preambulo)
-	pacote.print(sof)
-	pacote.print(macClientBit)
-	pacote.print(macServerBit)
-	pacote.print(etherType)
-	puts("Preambulo: "+preambulo+"\n")
-	puts("SOF: "+sof+"\n")
-	puts("MAC address do cliente: "+macClient.to_s+"\n")
-	puts("MAC address do servidor: "+macServer.to_s)
-	puts("Ether Type: "+etherType)
-	
-	# - Escreve dados do pacote
-	for j in 0..dataSize
-		part = mensagem[i]
-		if part == nil
-			ends = true
-			puts(part)
-			break
+vestigio = ""
+while true	
+	while not ends
+		# Cria pacote
+		# - Escreve cabecalho
+		puts("---------------------------------------")
+		puts("Enviando quadro "+package_index.to_s+" ...")
+		pacote = File.new("pacote.txt", "w")
+		pacote.print(preambulo)
+		pacote.print(sof)
+		pacote.print(macClientBit)
+		pacote.print(macServerBit)
+		pacote.print(etherType)
+		puts("Preambulo: "+preambulo+"\n")
+		puts("SOF: "+sof+"\n")
+		puts("MAC address do cliente: "+macClient.to_s+"\n")
+		puts("MAC address do servidor: "+macServer.to_s)
+		puts("Ether Type: "+etherType)
+		
+		# - Escreve dados do pacote
+		j = 0
+		for p in 0..(vestigio.length-1)
+			j += 1
+			pacote.print(vestigio[p].ord.to_s(2).rjust(10, '0'))
 		end
-		i += 1
-		pacote.print(part.ord.to_s(2).rjust(10, '0'))
-	end
-	pacote.close()
-	
-	# Ler dados do pacote
-	pdu = File.read('pacote.txt')
 
-	# Verificacao se ha colisao
-	colisao = rand(1...100) > 70
-	while colisao
-		puts("Ocorreu colisao no envio do pacote "+package_index.to_s+"\n")
-		sleep(rand(1...100)/100)
-		puts("Reenvio do pacote "+package_index.to_s+"\n")
+		vestigio = ""
+		while j < dataSize
+			pkt = rcv_pkt(transport2physical_port)
+			print(pkt)
+			for p in 0..(pkt.length-1)
+				if j >= dataSize
+					vestigio = pkt[p..pkt.length]
+					print("Vestigio: ", vestigio)
+					break
+				end
+				pacote.print(pkt[p].ord.to_s(2).rjust(10, '0'))
+				j += 1
+			end
+		end
+
+		pacote.close()
+		
+		# Ler dados do pacote
+		pdu = File.read('pacote.txt')
+
+		# Verificacao se ha colisao
 		colisao = rand(1...100) > 70
+		while colisao
+			puts("Ocorreu colisao no envio do pacote "+package_index.to_s+"\n")
+			sleep(rand(1...100)/100)
+			puts("Reenvio do pacote "+package_index.to_s+"\n")
+			colisao = rand(1...100) > 70
+		end
+
+		# Envio da pdu
+		tcpConnect(host, port, pdu)
+		puts("Envio do pacote "+package_index.to_s+" realizado com sucesso\n")
+		package_index += 1
+
 	end
+	tcpConnect(host, port, "acabou")	
+	# Encerramento da transferencia
 
-	# Envio da pdu
-	tcpConnect(host, port, pdu)
-	puts("Envio do pacote "+package_index.to_s+" realizado com sucesso\n")
-	package_index += 1
-
+	puts("---------------------------------------")
+	puts("\n\nEnvio da mensagem HTTP para o buffer de entrada do servidor\n\n")
 end
-
-# Encerramento da transferencia
-tcpConnect(host, port, "acabou")
-
-puts("---------------------------------------")
-puts("\n\nEnvio da mensagem HTTP para o buffer de entrada do servidor\n\n")
