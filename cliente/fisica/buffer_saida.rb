@@ -90,6 +90,19 @@ macServerBit = getMacBit(macServer)
 etherType = "0000"
 ends = false
 
+=begin
+	destinationPort sourcePort
+	sequencenumber
+	ack
+	data
+	TRAILER
+
+	No destino temos que ir lendo os bytes
+	Assim que ler um TRAILER, significa que acabamos de ler um pacote
+	entao enviamos esse pacote para a camada superior
+	Desta forma mantemos a estrutura atual de envio da 
+=end
+
 i = 0
 package_index = 1
 while not ends

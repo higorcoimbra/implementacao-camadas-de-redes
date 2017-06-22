@@ -35,6 +35,8 @@ func makeTransportHeaderTCP(source_port string,destination_port string,sequence_
     header.WriteString("\n")
     header.WriteString(string(sequence_number))
     header.WriteString("\n")
+    header.WriteString(string(0))
+    header.WriteString("\n")
     return header
 }
 
@@ -52,6 +54,7 @@ func makeSegment(header string, data string)(string){
     var segment bytes.Buffer
     segment.WriteString(header)
     segment.WriteString(data)
+    segment.WriteString("TRAILER")
     return segment.String() 
 }
 
@@ -131,6 +134,7 @@ func main() {
         transport_header = makeTransportHeader(source_port,destination_port,buffer_size)
         pdu_content.WriteString(transport_header.String())
         pdu_content.WriteString(application_content)
+        pdu_content.WriteString("TRAILER")
         //print(pdu_content.String())
 
         //enviando pacote a camada física
