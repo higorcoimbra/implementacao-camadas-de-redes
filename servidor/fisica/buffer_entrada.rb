@@ -47,25 +47,21 @@ destino = File.new("destino", "w")
 
 # Conexao para pegar o pacote
 package_index = 1
-puts("\n\n")
 pacote = ""
 final = "*******"
+transferencia_aberta = true
 
-while (1)
+while (transferencia_aberta)
 
-	print("Aguardando quadro do cliente")
+	print("Aguardando quadro do cliente ...\n\n")
 	client = server.accept
 	quadro = client.read()
 	client.close
 
-	# Encerramento da transferencia
-	if (quadro.length < 10)
-		break
-	end
-
 	# Pega apenas os dados retirando o cabecalho
 	pacotes = quadro[164..quadro.length]
-
+	puts("Quadro "+package_index.to_s+" recebido com sucesso\n\n")
+	package_index += 1
 
 	# Extrai bytes dos bits
 	i = 0
@@ -79,19 +75,21 @@ while (1)
 		end
 		final = pullAndDrag(final, byte.to_i(2).chr)
 		destino.print(byte.to_i(2).chr)
-		print("<",final,">\n")
-		if final == "TRAILER"
+
+		if final == "TRAILER" or final == "LASTSEG"
+			destino.close()
+			puts(File.read("destino"))
 			tcpConnect(host,physical2transport_port,File.read("destino"))
-			puts("Envio da mensagem HTTP para camada de transporte do servidor\n\n")
+			if final == "LASTSEG"
+				transferencia_aberta = false
+			else
+				destino = File.new("destino", "w")
+			end
 		end
 	end
 
-	puts("Quadro "+package_index.to_s+" recebido com sucesso\n")
-	package_index += 1
-
 end
 
-destino.close()
 puts("\n\nMensagem HTTP recebida com sucesso do buffer de saida do cliente\n\n")
 
 

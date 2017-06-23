@@ -7,6 +7,7 @@ import (
     "bytes"
     "strings"
     "strconv"
+    "sort"
 )
 
 /* A Simple function to verify error */
@@ -38,37 +39,36 @@ func getSourceDestinationPort(header string)(string,string){
 	return source_port.String(),destination_port.String()
 }
 
-func rdt_rcv(physical2transport_connection net.Conn)(pkt []byte){
-	pkt = make([]byte, 1024)
-
-    fmt.Println("Recebendo pacote da camada física...")
-    _,err := physical2transport_connection.Read(pkt)
-
-    CheckError(err)
-
-    return pkt
-}
-
 
 /*
     Funcao responsavel por verificar se o numero de sequencia 
     do pacote recebido e igual ao esperado
 */
-func hasSeqNum(rcvpkt string, expectedseqnum int) (bool) {
+func matchSeqNum(rcvpkt string, expectedseqnum int) (bool) {
     //retira do pacote recebido o numero de sequencia
     data := strings.Split(rcvpkt, "\n")
     seqnum := data[1]
+
     //compara com o numero esperado
-    return seqnum == string(expectedseqnum)
+    return seqnum == strconv.Itoa(expectedseqnum)
 }
 
 /*
     Extrai os dados do pacote
 */
-func extract(rcvpkt string)(string,string,string){
-    dados := strings.Split(rcvpkt,"\n")
+func extract(rcvpkt string)(string,string,string,string){
+    rcvpkt_formated := fmt.Sprintf(rcvpkt)
+    dados := strings.Split(rcvpkt_formated,"\n")
     portas := strings.Split(dados[0]," ")
-    return portas[0],portas[1],dados[1]
+    
+    data_aplication := ""
+    for i := 3; i < len(dados)-1; i++ {
+        data_aplication += dados[i] + "\n"
+    }  
+
+    data_aplication = data_aplication[:len(data_aplication)-8]
+
+    return portas[0],portas[1],dados[1],data_aplication
 }
 
 /*
@@ -111,7 +111,21 @@ func udtSend(segment string,transport2physical_address string){
     physical_connection.Close()
 }
 
+
+type AppContent struct {
+    SequenceNumber  int
+    Dado string
+}
+
+type BySequenceNumber []AppContent
+
+func (a BySequenceNumber) Len() int           { return len(a) }
+func (a BySequenceNumber) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a BySequenceNumber) Less(i, j int) bool { return a[i].SequenceNumber < a[j].SequenceNumber }
+
 func main(){
+    print := fmt.Println
+
     physical2transport_address := ":8002"
     transport2physical_address := ":8008"
     buf := make([]byte, 1024)
@@ -123,19 +137,19 @@ func main(){
     CheckError(err)
     physical2transport_listener, err := net.ListenTCP("tcp", physical2transport_port)
     CheckError(err)
-    physical2transport_connection, err := physical2transport_listener.Accept() 
-    CheckError(err)
 
     if opcao_trasmissao == "udp" {
     	//lendo dados da camada física
+        physical2transport_connection, err := physical2transport_listener.Accept() 
+        CheckError(err)
         buffer_size,err := physical2transport_connection.Read(buf)
         CheckError(err)
-        fmt.Println(string(buf[0:buffer_size]))
-        fmt.Println("Mensagem recebida com sucesso da camada física...")
+        print(string(buf[0:buffer_size]))
+        print("Mensagem recebida com sucesso da camada física...")
         physical2transport_connection.Close()
 
         //enviando conteúdo do pacote para a camada de aplicação
-        fmt.Println("Enviando pacote para a camada de aplicação...")
+        print("Enviando pacote para a camada de aplicação...")
         source_address,destination_address := getSourceDestinationPort(string(buf[0:9]))
         app_content := string(buf[14:])
         transport2app_port,err := net.ResolveTCPAddr("tcp",destination_address)
@@ -145,10 +159,10 @@ func main(){
     	buffer_size,err = transport2app_connection.Write([]byte(app_content))
         CheckError(err)
         transport2app_connection.Close()
-        fmt.Println("Pacote enviado com sucesso para a aplicação.")
+        print("Pacote enviado com sucesso para a aplicação.")
 
         //recebendo resposta HTTP da camada de aplicação
-        fmt.Println("Recebendo resposta HTTP da camada de aplicação...")
+        print("Recebendo resposta HTTP da camada de aplicação...")
         tmp := source_address
         source_address = destination_address
         destination_address = tmp
@@ -178,30 +192,43 @@ func main(){
     } else if opcao_trasmissao == "tcp" {
 
         rcvpkt := make([]byte, 1024)
-        minSize := 10
-        expectedseqnum := 0
+        expectedseqnum := 1
+        app_content := []AppContent{}
+
         /*
             maquina de estados do destinatario
         */
         for ; ; {
-            rcvpkt = rdt_rcv(physical2transport_connection)
 
-            fmt.Println(string(rcvpkt))
+            /*
+                Recebendo segmento da camada fisica
+            */
 
-            // caso receba um pacote com tamanho 
-            if (len(rcvpkt) <= minSize) {
-                break;
+            print("Recebendo segmento da camada física...")
+            physical2transport_connection, err := physical2transport_listener.Accept() 
+            CheckError(err)
+            _,err = physical2transport_connection.Read(rcvpkt)
+            CheckError(err)
+
+            if (matchSeqNum(string(rcvpkt), expectedseqnum)) {
+                source_port,destination_port,_,data := extract(string(rcvpkt))
+                sndpkt := makePkt(string(expectedseqnum), source_port, destination_port)
+                print(sndpkt)
+                //udtSend(sndpkt, transport2physical_address)
+                print(data)
+                app_content = append(app_content, AppContent{expectedseqnum, data})
+                expectedseqnum += 1
             }
 
-            if (hasSeqNum(string(rcvpkt), expectedseqnum)) {
-                source_port,destination_port,data := extract(string(rcvpkt))
-                deliverData(data,destination_port)
-                sndpkt := makePkt(string(expectedseqnum), source_port, destination_port)
-                udtSend(sndpkt, transport2physical_address)
-                expectedseqnum += 1
+            if (string(rcvpkt[24:31]) == "LASTSEG") {
+                physical2transport_connection.Close()
+                break;
             }
         }
 
+        sort.Sort(BySequenceNumber(app_content))
+        //deliverData(data,destination_port)
+        print(app_content)
 
     }
 

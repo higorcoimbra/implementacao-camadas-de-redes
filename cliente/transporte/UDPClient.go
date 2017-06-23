@@ -18,7 +18,7 @@ func CheckError(err error) {
     }
 }
  
-func makeTransportHeader(source_port string,destination_port string,buffer_size int)(header bytes.Buffer){
+func makeTransportHeaderUDP(source_port string,destination_port string,buffer_size int)(header bytes.Buffer){
     header.WriteString(strings.Split(source_port,":")[1])
     header.WriteString(" ")
     header.WriteString(strings.Split(destination_port,":")[1])
@@ -33,9 +33,9 @@ func makeTransportHeaderTCP(source_port string,destination_port string,sequence_
     header.WriteString(" ")
     header.WriteString(strings.Split(destination_port,":")[1])
     header.WriteString("\n")
-    header.WriteString(string(sequence_number))
+    header.WriteString(strconv.Itoa(sequence_number))
     header.WriteString("\n")
-    header.WriteString(string(0))
+    header.WriteString("0")
     header.WriteString("\n")
     return header
 }
@@ -50,12 +50,16 @@ func getSourceDestinationPort(header string)(string,string){
     return source_port.String(),destination_port.String()
 }
 
-func makeSegment(header string, data string)(string){
+func makeSegment(header string, data string, len_rdt_buffer int)(string){
     var segment bytes.Buffer
     segment.WriteString(header)
     segment.WriteString(data)
-    segment.WriteString("TRAILER")
-    return segment.String() 
+    if len_rdt_buffer != 0{
+        segment.WriteString("TRAILER")
+    }else{
+        segment.WriteString("LASTSEG")
+    }
+    return segment.String()
 }
 
 func udt_send(segment string,transport2physical_address string){
@@ -131,7 +135,7 @@ func main() {
         //formando pacote na camada de transporte
         //print("")
         //print("")
-        transport_header = makeTransportHeader(source_port,destination_port,buffer_size)
+        transport_header = makeTransportHeaderUDP(source_port,destination_port,buffer_size)
         pdu_content.WriteString(transport_header.String())
         pdu_content.WriteString(application_content)
         pdu_content.WriteString("TRAILER")
@@ -204,21 +208,25 @@ func main() {
             j = j+1
         }
 
-        window_buffer := make([]string,WINDOW_SIZE)
+        window_buffer := make([]string, 0)
         /*
         	Maquina de estados para o remetente
         */
-        for ; len(rdt_buffer) > 30; {
+        rdt_buffer = rdt_buffer[:3]
+        print("---APPLICATION CONTENT----")
+        print(application_content)
+        for ; len(rdt_buffer) != 0; {
             data = rdt_buffer[0]
 
             /*
 				Envio de dados caso o proximo pacote esteja dentro da janela
             */
+
             if(nextseqnum < base+WINDOW_SIZE){
                 rdt_buffer = rdt_buffer[1:]
                 header = makeTransportHeaderTCP(source_port,destination_port,nextseqnum)
-                segment = makeSegment(header.String(),data)
-                //udt_send(segment,transport2physical_address)
+                segment = makeSegment(header.String(),data, len(rdt_buffer))
+                udt_send(segment,transport2physical_address)
                 window_buffer = append(window_buffer,segment)
                 if(base == nextseqnum){
                 	stop_timer = false
@@ -236,7 +244,7 @@ func main() {
 			} else {
             	current = time.Now().UnixNano()
             }
-            print(ack," ",current," ",start_timer," ",current-start_timer," ",total_interval)
+            //print(ack," ",current," ",start_timer," ",current-start_timer," ",total_interval)
 
             if(current - start_timer -total_interval > timeout) {
                 print("Tempo excedido")
