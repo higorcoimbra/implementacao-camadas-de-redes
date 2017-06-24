@@ -13,6 +13,13 @@ def tcpConnect(host, port, mensagem)
 	server.close()
 end
 
+def pullAndDrag(final, byte)
+	for i in 0..final.length-2
+		final[i]  = final[i+1]
+	end
+	final[final.length-1] = byte
+	return final
+end
 # Variaveis de configuracao de host
 host = '127.0.0.1'
 port = 8004
@@ -40,41 +47,60 @@ destino = File.new("destino", "w")
 
 # Conexao para pegar o pacote
 package_index = 1
-puts("\n\n")
-while (1)
+pacote = ""
+final = "*******"
+transferencia_aberta = true
 
+while (transferencia_aberta)
+
+	print("Aguardando quadro do servidor ...\n\n")
 	client = server.accept
-	pacote = client.read()
+	quadro = client.read()
 	client.close
 
-	# Encerramento da transferencia
-	if (pacote.length < 10)
-		break
-	end
-
 	# Pega apenas os dados retirando o cabecalho
-	dados = pacote[164..pacote.length]
+	pacotes = quadro[164..quadro.length]
+	puts("Quadro "+package_index.to_s+" recebido com sucesso\n\n")
+	package_index += 1
 
 	# Extrai bytes dos bits
 	i = 0
-	while (i < dados.length-1)
+	qtdByte = 1
+	while (i < pacotes.length-1)
 		byte = ""
 		j = 0
 		while (j < 10)
-			byte += dados[i]
+			byte += pacotes[i]
 			i += 1
 			j += 1
 		end
-		# Escreve no arquivo de destino
+		final = pullAndDrag(final, byte.to_i(2).chr)
 		destino.print(byte.to_i(2).chr)
+
+		# Checa se o pacote e' um ack 
+		if qtdByte == 13
+			if byte.to_i(2).chr != "0"
+				destino.close()
+				#tcpConnect(host,physical2transport_port,File.read("destino"))
+				destino = File.new("destino", "w")
+			end
+		end
+		qtdByte += 1
+
+		if final == "TRAILER" or final == "LASTSEG"
+			destino.close()
+			puts(File.read("destino"))
+			tcpConnect(host,physical2transport_port,File.read("destino"))
+			if final == "LASTSEG"
+				transferencia_aberta = false
+			else
+				destino = File.new("destino", "w")
+			end
+		end
 	end
-	puts("Pacote "+package_index.to_s+" recebido com sucesso\n")
-	package_index += 1
 
 end
 
-destino.close()
-puts("\n\nArquivo HTML recebido com sucesso do buffer de saida do servidor\n\n")
-
-tcpConnect(host,physical2transport_port,File.read("destino"))
 puts("Envio do arquivo HTML para camada de transporte do cliente\n\n")
+
+

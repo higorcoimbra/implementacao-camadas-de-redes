@@ -92,16 +92,16 @@ func deliverData(destination_port string, data string){
 /*
     Monta o pacote ACK
 */
-func makePkt(expectedseqnum string, source_port string, destination_port string)(pkt string){
-    pkt = destination_port + " " + source_port + "\n" + expectedseqnum + "\n" + expectedseqnum + "\n"
+func makeACK(expectedseqnum string, source_port string, destination_port string)(pkt string){
+    pkt = destination_port + " " + source_port + "\n" + expectedseqnum + "\n" + expectedseqnum
     return pkt
 }
 
 /*
     Envia pacote a camada física
 */
-func udtSend(segment string,transport2physical_address string){
-    fmt.Println("Enviando pacote para a camada física...")
+func ACKSend(segment string,transport2physical_address string){
+    fmt.Println("Enviando confirmacao de pacote para a camada física...")
     physical_port, err := net.ResolveTCPAddr("tcp", transport2physical_address)
     CheckError(err)
     physical_connection, err := net.DialTCP("tcp", nil, physical_port)
@@ -194,6 +194,7 @@ func main(){
         rcvpkt := make([]byte, 1024)
         expectedseqnum := 1
         app_content := []AppContent{}
+        transport2app_content := ""
 
         /*
             maquina de estados do destinatario
@@ -212,11 +213,9 @@ func main(){
 
             if (matchSeqNum(string(rcvpkt), expectedseqnum)) {
                 source_port,destination_port,_,data := extract(string(rcvpkt))
-                sndpkt := makePkt(string(expectedseqnum), source_port, destination_port)
-                print(sndpkt)
-                //udtSend(sndpkt, transport2physical_address)
-                print(data)
                 app_content = append(app_content, AppContent{expectedseqnum, data})
+                sndACK := makeACK(strconv.Itoa(expectedseqnum), source_port, destination_port)
+                ACKSend(sndACK, transport2physical_address)
                 expectedseqnum += 1
             }
 
@@ -227,8 +226,12 @@ func main(){
         }
 
         sort.Sort(BySequenceNumber(app_content))
-        //deliverData(data,destination_port)
-        print(app_content)
+        for i := 0; i < len(app_content); i++ {
+            transport2app_content += app_content[i].Dado
+        }
+        //deliverData(data,destination_port) <---------- enviar mensagem completa pra camada de aplicacao do servidor
+        print("\n\n\nCONTEUDO\n\n")
+        print(transport2app_content)
 
     }
 

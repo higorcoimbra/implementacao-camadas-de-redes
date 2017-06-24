@@ -32,6 +32,29 @@ def tcpConnect(host, port, mensagem)
 	server.close()
 end
 
+def rcv_pkt(transport2physical_port)
+	#Cria um socket para transmissao da mensagem HTTP do processo cliente da aplicacao (navegador)..
+	#..para a camada fisica
+	print("Aguardando conexao da camada de transporte na porta ", transport2physical_port," ...")
+	interface = TCPServer.open(transport2physical_port)
+	application = interface.accept
+	print("Aguardando recebimento de pacote na porta ", transport2physical_port)
+	mensagem = application.read()
+	puts("\n\nSegmento recebido com sucesso da camada de transporte cliente\n\n")
+	interface.close()
+	return mensagem
+end
+
+
+def makeCamadaFisicaHeaderTCP(pacote, preambulo, sof, macClientBit, macServerBit, etherType)
+	pacote.print(preambulo)
+	pacote.print(sof)
+	pacote.print(macClientBit)
+	pacote.print(macServerBit)
+	pacote.print(etherType)
+	return pacote
+end
+
 
 # Variaveis uteis
 infinito = 0x3f3f3f3f
@@ -43,12 +66,6 @@ port = 8004
 transport2physical_port = 8008
 macClient = Mac.addr
 macServer = 'aa:aa:aa:aa:aa:aa'
-
-#Cria um socket para receber a mensagem HTTP da aplicacao do servidor
-interface = TCPServer.open(transport2physical_port)
-application = interface.accept
-mensagem = application.read()
-puts("\n\nArquivo HTML recebido com sucesso da camada de transporte do servidor\n\n")
 
 # Variaveis de configuracao da transmissao
 transmissionClient = 120
@@ -73,7 +90,7 @@ if dataSize < 1
 	exit 1
 end
 
-# Pega informacoes de host do servidor
+# Pega informacoes de host do cliente
 server = TCPSocket.open(host, port)
 macServer = server.gets
 server.close()
@@ -86,50 +103,92 @@ sof="10101011"
 macClientBit = getMacBit(macClient)
 macServerBit = getMacBit(macServer)
 etherType = "0000"
-ends = false
+transferencia_aberta = true
 
-i = 0
+=begin
+	destinationPort sourcePort
+	sequencenumber
+	ack
+	data
+	TRAILER
+
+	No destino temos que ir lendo os bytes
+	Assim que ler um TRAILER, significa que acabamos de ler um pacote
+	entao enviamos esse pacote para a camada superior
+	Desta forma mantemos a estrutura atual de envio da 
+=end
+
 package_index = 1
-while not ends
-	
+vestigio = ""
+last_seg = false
+
+while transferencia_aberta
 	# Cria pacote
 	# - Escreve cabecalho
 	puts("---------------------------------------")
-	puts("Enviando pacote "+package_index.to_s+" ...")
+	puts("Enviando quadro "+package_index.to_s+" ...")
 	pacote = File.new("pacote.txt", "w")
-	pacote.print(preambulo)
-	pacote.print(sof)
-	pacote.print(macClientBit)
-	pacote.print(macServerBit)
-	pacote.print(etherType)
+	pacote = makeCamadaFisicaHeaderTCP(pacote, preambulo, sof, macClientBit, macServerBit, etherType)
 	puts("Preambulo: "+preambulo+"\n")
 	puts("SOF: "+sof+"\n")
 	puts("MAC address do cliente: "+macClient.to_s+"\n")
 	puts("MAC address do servidor: "+macServer.to_s)
-	puts("Ether Type: "+etherType)
+	puts("Ether Type: "+etherType+"\n\n")
 
-	# - Escreve dados do pacote
-	for j in 0..dataSize
-		part = mensagem[i]
-		if part == nil
-			ends = true
-			break
+	# - Escreve dados no pacote
+	j = 0
+	for p in 0..(vestigio.length-1)
+		j += 1
+		pacote.print(vestigio[p].ord.to_s(2).rjust(10, '0'))
+		if vestigio[vestigio.length-7..vestigio.length-1] == "LASTSEG"
+			last_seg = true
+			transferencia_aberta = false
 		end
-		i += 1
-		pacote.print(part.ord.to_s(2).rjust(10, '0'))
 	end
+
+	vestigio = ""
+	if not last_seg
+		while j < dataSize
+			pkt = rcv_pkt(transport2physical_port)
+			for p in 0..(pkt.length-1)
+				if j >= dataSize
+					vestigio = pkt[p..pkt.length]
+					print("Vestigio: ", vestigio,"\n\n")
+					break
+				end
+				pacote.print(pkt[p].ord.to_s(2).rjust(10, '0'))
+				j += 1
+			end
+
+
+			# Caso seja um pacote ACK
+			if pkt[12] != 0
+				break
+			else
+				# Caso seja um pacote com dados
+				if pkt[pkt.length-7..pkt.length-1] == "LASTSEG"
+					if vestigio == ""
+						transferencia_aberta = false
+					end
+					break
+				end
+			end
+		end
+	end
+
 	pacote.close()
-	
+	last_seg = false
+
 	# Ler dados do pacote
 	pdu = File.read('pacote.txt')
 
 	# Verificacao se ha colisao
-	colisao = rand(1...100) > 90
+	colisao = rand(1...100) > 70
 	while colisao
 		puts("Ocorreu colisao no envio do pacote "+package_index.to_s+"\n")
 		sleep(rand(1...100)/100)
 		puts("Reenvio do pacote "+package_index.to_s+"\n")
-		colisao = rand(1...100) > 90
+		colisao = rand(1...100) > 70
 	end
 
 	# Envio da pdu
@@ -138,9 +197,6 @@ while not ends
 	package_index += 1
 
 end
-
-# Encerramento da transferencia
-tcpConnect(host, port, "acabou")
 
 puts("---------------------------------------")
 puts("\n\nEnvio do arquivo HTML para o buffer de entrada do cliente\n\n")
