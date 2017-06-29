@@ -172,7 +172,7 @@ func main() {
         timeout := int64(1000000000)
         stop_timer := true
 
-        var ack int
+        //var ack int
         var data string
         var segment string
         var header bytes.Buffer
@@ -180,7 +180,7 @@ func main() {
         var current int64
         var total_interval int64
         var start_timer int64
-        var interval int64
+        //var interval int64
 
         j := 0
         for i := 0; i < len(application_content); i++ {
@@ -202,22 +202,26 @@ func main() {
         print(application_content)
 
     
-        print("\nAbrindo conexao para receber ACK...")
-        physical2transport_port, _ := net.ResolveTCPAddr("tcp",physical2transport_address)
-        physical2transport_listener, _ := net.ListenTCP("tcp", physical2transport_port)
+        //print("\nAbrindo conexao para receber ACK...")
+        //physical2transport_port, _ := net.ResolveTCPAddr("tcp",physical2transport_address)
+        //physical2transport_listener, _ := net.ListenTCP("tcp", physical2transport_port)
 
         print("\ntamanho rdt buffer\n")
         print(len(rdt_buffer))
 
         for ; len(rdt_buffer) != 0 || len(window_buffer) != 0; {
-            data = rdt_buffer[0]
+            if(len(rdt_buffer) > 0){
+                data = rdt_buffer[0]
+            }
 
             /*
 				Envio de dados caso o proximo pacote esteja dentro da janela
             */
 
             if(nextseqnum < base+WINDOW_SIZE){
-                rdt_buffer = rdt_buffer[1:]
+                if (len(rdt_buffer) > 0) {
+                    rdt_buffer = rdt_buffer[1:]
+                }
                 header = makeTransportHeaderTCP(source_port,destination_port,nextseqnum)
                 segment = makeSegment(header.String(), data, len(rdt_buffer))
                 udt_send(segment,transport2physical_address)
@@ -228,6 +232,7 @@ func main() {
                     total_interval = 0
                 }
                 nextseqnum = nextseqnum + 1
+                base += 1
             }
 
             /*
@@ -261,7 +266,7 @@ func main() {
             /*
 				Verificacao de recepcao de ack do destino
             */
-            {
+            /*{
                 read_timeout := 1e9*time.Nanosecond
                 physical_content := make([]byte,1024)
                 inicio := time.Now().UnixNano()
@@ -295,7 +300,7 @@ func main() {
                 		start_timer = time.Now().UnixNano()
                 	}
                 }
-            }
+            }*/
             time.Sleep(timeSleep)
         }   
     }

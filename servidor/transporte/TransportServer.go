@@ -108,6 +108,17 @@ func makeACK(expectedseqnum string, source_port string, destination_port string)
     return pkt
 }
 
+func convert(str []byte)(converted string){
+    
+    converted = ""
+    for i := 0;i < len(str); i +=1{
+        if(str[i] != 00000000){
+            converted += string(str[i])
+        }
+    }
+    return converted
+}
+
 /*
     Envia pacote a camada física
 */
@@ -226,9 +237,11 @@ func main(){
             physical2transport_connection, err := physical2transport_listener.Accept() 
             CheckError(err)
             _,err = physical2transport_connection.Read(rcvpkt)
+            rcvpkt_formated := convert(rcvpkt)
             CheckError(err)
-
-            if (matchSeqNum(string(rcvpkt), expectedseqnum)) {
+            _,_,_,data := extract(rcvpkt_formated)
+            app_content = append(app_content, AppContent{expectedseqnum, data})
+            /*if (matchSeqNum(string(rcvpkt), expectedseqnum)) {
                 print(string(rcvpkt))
                 print(string(rcvpkt[26:33]))
                 source_port,destination_port,_,data := extract(string(rcvpkt))
@@ -240,11 +253,15 @@ func main(){
                 source_port,destination_port,_,_ := extract(string(rcvpkt))
                 sndACK := makeACK(strconv.Itoa(expectedseqnum-1), source_port, destination_port)
                 ACKSend(sndACK, transport2physical_address)
-            }
+            }*/
 
-            if (string(rcvpkt[26:33]) == "LASTSEG") {
-                physical2transport_connection.Close()
-                break;
+            if(strings.Contains(rcvpkt_formated,"LASTSEG")){
+                index := strings.Index(rcvpkt_formated,"LASTSEG")
+                print(rcvpkt_formated[index:index+len("LASTSEG")])
+                if (rcvpkt_formated[index:index+len("LASTSEG")] == "LASTSEG") {
+                    physical2transport_connection.Close()
+                    break;
+                }
             }
         }
 

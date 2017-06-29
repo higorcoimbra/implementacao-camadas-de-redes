@@ -90,7 +90,7 @@ func printBuffer(buffer []string){
 
 
 func main() {
-	print := fmt.Println
+    print := fmt.Println
 
     var opcao_trasmissao string
     opcao_trasmissao = "tcp"
@@ -172,7 +172,7 @@ func main() {
         timeout := int64(1000000000)
         stop_timer := true
 
-        var ack int
+        //var ack int
         var data string
         var segment string
         var header bytes.Buffer
@@ -180,7 +180,7 @@ func main() {
         var current int64
         var total_interval int64
         var start_timer int64
-        var interval int64
+        //var interval int64
 
         j := 0
         for i := 0; i < len(application_content); i++ {
@@ -195,49 +195,52 @@ func main() {
 
         window_buffer := make([]string, 0)
         /*
-        	Maquina de estados para o remetente
+            Maquina de estados para o remetente
         */
         
         print("---APPLICATION CONTENT----")
         print(application_content)
 
     
-        print("\nAbrindo conexao para receber ACK...")
-        physical2transport_port, _ := net.ResolveTCPAddr("tcp",physical2transport_address)
-        physical2transport_listener, _ := net.ListenTCP("tcp", physical2transport_port)
+        //print("\nAbrindo conexao para receber ACK...")
+        //physical2transport_port, _ := net.ResolveTCPAddr("tcp",physical2transport_address)
+        //physical2transport_listener, _ := net.ListenTCP("tcp", physical2transport_port)
 
         print("\ntamanho rdt buffer\n")
         print(len(rdt_buffer))
-
+        
         for ; len(rdt_buffer) != 0 || len(window_buffer) != 0; {
-            if (len(rdt_buffer) != 0) {
+            if(len(rdt_buffer) > 0){
                 data = rdt_buffer[0]
             }
             /*
-				Envio de dados caso o proximo pacote esteja dentro da janela
+                Envio de dados caso o proximo pacote esteja dentro da janela
             */
 
             if(nextseqnum < base+WINDOW_SIZE){
-                rdt_buffer = rdt_buffer[1:]
+                 if (len(rdt_buffer) > 0) {
+                    rdt_buffer = rdt_buffer[1:]
+                }
                 header = makeTransportHeaderTCP(source_port,destination_port,nextseqnum)
                 segment = makeSegment(header.String(), data, len(rdt_buffer))
                 udt_send(segment,transport2physical_address)
                 window_buffer = append(window_buffer,segment)
                 if(base == nextseqnum){
-                	stop_timer = false
+                    stop_timer = false
                     start_timer = time.Now().UnixNano()
                     total_interval = 0
                 }
                 nextseqnum = nextseqnum + 1
+                base += 1
             }
 
             /*
-				Verificacao do timeout do pacote base
+                Verificacao do timeout do pacote base
             */
-			if (stop_timer == true) {
-				current = 0
-			} else {
-            	current = time.Now().UnixNano()
+            if (stop_timer == true) {
+                current = 0
+            } else {
+                current = time.Now().UnixNano()
             }
             //print(ack," ",current," ",start_timer," ",current-start_timer," ",total_interval)
 
@@ -260,9 +263,9 @@ func main() {
             }
 
             /*
-				Verificacao de recepcao de ack do destino
+                Verificacao de recepcao de ack do destino
             */
-            {
+            /*{
                 read_timeout := 1e9*time.Nanosecond
                 physical_content := make([]byte,1024)
                 inicio := time.Now().UnixNano()
@@ -289,14 +292,14 @@ func main() {
                 //interval, ack = rdt_rcv(physical2transport_listener)
                 total_interval = total_interval + interval
                 if ack != 0 {
-                	base = ack+1
-                	if base == nextseqnum {
-                		stop_timer = true
-                	} else {
-                		start_timer = time.Now().UnixNano()
-                	}
+                    base = ack+1
+                    if base == nextseqnum {
+                        stop_timer = true
+                    } else {
+                        start_timer = time.Now().UnixNano()
+                    }
                 }
-            }
+            }*/
             time.Sleep(timeSleep)
         }   
     }

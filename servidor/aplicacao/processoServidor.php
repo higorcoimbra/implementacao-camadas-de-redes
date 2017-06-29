@@ -47,7 +47,7 @@ echo $content."\n\n";
 
 // Envia arquivo html para o buffer de saida do servidor
 echo "Envio do arquivo HTML para a camada de transporte\n\n";
-$socket = socket_create(AF_INET, SOCK_STREAM, 0) or die("Nao foi possivel criar o socket\n");
+$socket = socket_create(AF_INET, SOCK_DGRAM, 0) or die("Nao foi possivel criar o socket\n");
 $valid = socket_connect($socket, $host, $transport_app_port_communication) or die ("Nao foi possivel conectar ao navegador");
 $valid = socket_write($socket, $content) or die ("Nao foi possivel enviar mensagem");
 socket_close($socket);

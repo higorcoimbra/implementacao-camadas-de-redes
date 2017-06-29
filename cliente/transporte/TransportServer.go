@@ -30,13 +30,13 @@ func makeTransportHeader(source_port string,destination_port string,buffer_size 
 
 
 func getSourceDestinationPort(header string)(string,string){
-	var destination_port bytes.Buffer
-	var source_port bytes.Buffer
-	destination_port.WriteString(":")
-	destination_port.WriteString(strings.Split(header," ")[1])
-	source_port.WriteString(":")
-	source_port.WriteString(strings.Split(header," ")[0])
-	return source_port.String(),destination_port.String()
+    var destination_port bytes.Buffer
+    var source_port bytes.Buffer
+    destination_port.WriteString(":")
+    destination_port.WriteString(strings.Split(header," ")[1])
+    source_port.WriteString(":")
+    source_port.WriteString(strings.Split(header," ")[0])
+    return source_port.String(),destination_port.String()
 }
 
 
@@ -69,8 +69,14 @@ func extract(rcvpkt string)(string,string,string,string){
     for i := 3; i < len(dados)-1; i++ {
         data_aplication += dados[i] + "\n"
     }  
-
-    data_aplication = data_aplication[:len(data_aplication)-8]
+    print("\n-----data aplication----\n")
+    print(data_aplication)
+    print("\n-----------\n")
+    if(strings.Contains(data_aplication,"LASTSEG")){
+        data_aplication = data_aplication[:strings.Index(data_aplication,"LASTSEG")]
+    }else{
+        data_aplication = data_aplication[:strings.Index(data_aplication,"TRAILER")]
+    }
 
     return portas[0],portas[1],dados[1],data_aplication
 }
@@ -134,6 +140,17 @@ type AppContent struct {
     Dado string
 }
 
+func convert(str []byte)(converted string){
+    
+    converted = ""
+    for i := 0;i < len(str); i +=1{
+        if(str[i] != 00000000){
+            converted += string(str[i])
+        }
+    }
+    return converted
+}
+
 type BySequenceNumber []AppContent
 
 func (a BySequenceNumber) Len() int           { return len(a) }
@@ -149,14 +166,14 @@ func main(){
 
     var opcao_trasmissao string
     opcao_trasmissao = "tcp"
-	
+    
     physical2transport_port,err := net.ResolveTCPAddr("tcp",physical2transport_address)
     CheckError(err)
     physical2transport_listener, err := net.ListenTCP("tcp", physical2transport_port)
     CheckError(err)
 
     if opcao_trasmissao == "udp" {
-    	//lendo dados da camada física
+        //lendo dados da camada física
         physical2transport_connection, err := physical2transport_listener.Accept() 
         CheckError(err)
         buffer_size,err := physical2transport_connection.Read(buf)
@@ -170,10 +187,10 @@ func main(){
         source_address,destination_address := getSourceDestinationPort(string(buf[0:9]))
         app_content := string(buf[14:])
         transport2app_port,err := net.ResolveTCPAddr("tcp",destination_address)
-    	CheckError(err)
+        CheckError(err)
         transport2app_connection, err := net.DialTCP("tcp", nil, transport2app_port)
         CheckError(err)
-    	buffer_size,err = transport2app_connection.Write([]byte(app_content))
+        buffer_size,err = transport2app_connection.Write([]byte(app_content))
         CheckError(err)
         transport2app_connection.Close()
         print("Pacote enviado com sucesso para a aplicação.")
@@ -184,26 +201,26 @@ func main(){
         source_address = destination_address
         destination_address = tmp
         app2transport_port,err := net.ResolveTCPAddr("tcp",source_address)
-    	CheckError(err)
+        CheckError(err)
         app2transport_listener, err := net.ListenTCP("tcp", app2transport_port)
         CheckError(err)
-    	appp2transport_connection, err := app2transport_listener.Accept()
-    	CheckError(err)
-    	buffer_size,err = appp2transport_connection.Read(buf)
-    	appp2transport_connection.Close()
+        appp2transport_connection, err := app2transport_listener.Accept()
+        CheckError(err)
+        buffer_size,err = appp2transport_connection.Read(buf)
+        appp2transport_connection.Close()
         
         //enviando resposta HTTP para a camada física
         //fazendo cabeçalho UDP
-    	var pdu_content bytes.Buffer
+        var pdu_content bytes.Buffer
         application_content := string(buf[0:buffer_size])
         transport_header := makeTransportHeader(source_address,destination_address,buffer_size)
         pdu_content.WriteString(transport_header.String())
         pdu_content.WriteString(application_content)
         transport2physical_port,err := net.ResolveTCPAddr("tcp",transport2physical_address)
-    	CheckError(err)
+        CheckError(err)
         transport2physical_connection, err := net.DialTCP("tcp", nil, transport2physical_port)
         CheckError(err)
-    	buffer_size,err = transport2physical_connection.Write([]byte(pdu_content.String()))
+        buffer_size,err = transport2physical_connection.Write([]byte(pdu_content.String()))
         CheckError(err)
         transport2physical_connection.Close()
     } else if opcao_trasmissao == "tcp" {
@@ -226,9 +243,16 @@ func main(){
             physical2transport_connection, err := physical2transport_listener.Accept() 
             CheckError(err)
             _,err = physical2transport_connection.Read(rcvpkt)
+            //print("\n-------- Conteudo do pacote convertido em string -----\n")
+            //print(string(rcvpkt))
+            rcvpkt_formated := convert(rcvpkt)
             CheckError(err)
-
-            if (matchSeqNum(string(rcvpkt), expectedseqnum)) {
+            //print("\n---- Conteúdo convertido ------\n")
+            //print(len(rcvpkt_formated)," ",rcvpkt_formated)
+            _,_,_,data := extract(rcvpkt_formated)
+            print("Dado extraido: \n",data)
+            app_content = append(app_content, AppContent{expectedseqnum, data})
+            /*if (matchSeqNum(string(rcvpkt), expectedseqnum)) {
                 print(string(rcvpkt))
                 print(string(rcvpkt[26:33]))
                 source_port,destination_port,_,data := extract(string(rcvpkt))
@@ -240,11 +264,14 @@ func main(){
                 source_port,destination_port,_,_ := extract(string(rcvpkt))
                 sndACK := makeACK(strconv.Itoa(expectedseqnum-1), source_port, destination_port)
                 ACKSend(sndACK, transport2physical_address)
-            }
-
-            if (string(rcvpkt[len(rcvpkt)-8:len(rcvpkt)]) == "LASTSEG") {
-                physical2transport_connection.Close()
-                break;
+            }*/
+            if(strings.Contains(rcvpkt_formated,"LASTSEG")){
+                index := strings.Index(rcvpkt_formated,"LASTSEG")
+                print(rcvpkt_formated[index:index+len("LASTSEG")])
+                if (rcvpkt_formated[index:index+len("LASTSEG")] == "LASTSEG") {
+                    physical2transport_connection.Close()
+                    break;
+                }
             }
         }
 

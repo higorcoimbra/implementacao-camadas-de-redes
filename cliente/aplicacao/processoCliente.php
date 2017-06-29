@@ -21,6 +21,7 @@ $valid = socket_listen($browser, 1) or die("Nao foi possivel estabelecer a escut
 $spawn_browser = socket_accept($browser) or die("Nao foi possivel conectar\n");
 // Le a mensagem de requisição HTTP do navegador
 $mensagemHTTP = socket_read($spawn_browser, $http_port) or die("Nao foi possivel ler a entrada\n");
+$mensagemHTTP = $mensagemHTTP."\n";
 echo "Mensagem HTTP de requisicao recebida pelo browser:\n";
 echo $mensagemHTTP."\n";
 
@@ -62,5 +63,5 @@ echo "Transmitindo mensagem de resposta HTTP para o navegador\n\n";
 socket_write($spawn_browser, $file);
 
 socket_close($spawn_browser);
-
+echo "Passou do write e close"
 ?>
