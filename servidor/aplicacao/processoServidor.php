@@ -22,10 +22,10 @@ $spawn = socket_accept($socket) or die("Nao foi possivel conectar\n");
 $mensagemHTTP = socket_read($spawn, $transport_app_port_communication) or die("Nao foi possivel ler a entrada\n");
 socket_close($socket);
 socket_close($spawn);
-echo "\n\nMensagem HTTP recebida com sucesso do buffer de entrada do servidor\n\n";
+echo "\n\nMensagem HTTP recebida com sucesso da camada de trasnporte\n\n";
 
 /*
- * Transmitindo o arquivo solicitado a camada fisica
+ * Transmitindo o arquivo solicitado a camada de transporte
  */
 
 $http_header="HTTP/1.1 200 OK
@@ -46,7 +46,7 @@ echo "Conteudo da resposta HTTP:\n";
 echo $content."\n\n";
 
 // Envia arquivo html para o buffer de saida do servidor
-echo "Envio do arquivo HTML para o buffer de saida do servidor\n\n";
+echo "Envio do arquivo HTML para a camada de transporte\n\n";
 $socket = socket_create(AF_INET, SOCK_STREAM, 0) or die("Nao foi possivel criar o socket\n");
 $valid = socket_connect($socket, $host, $transport_app_port_communication) or die ("Nao foi possivel conectar ao navegador");
 $valid = socket_write($socket, $content) or die ("Nao foi possivel enviar mensagem");

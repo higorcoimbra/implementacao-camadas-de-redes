@@ -26,7 +26,7 @@ port = 8000
 physical2transport_port = 8002
 
 # Variaveis de transmissao
-transmissionServer = 120
+transmissionServer = 100
 gargalo = transmissionServer
 macServidor = Mac.address
 
@@ -53,7 +53,7 @@ transferencia_aberta = true
 
 while (transferencia_aberta)
 
-	print("Aguardando quadro do cliente ...\n\n")
+	print("Aguardando quadro do servidor ...\n\n")
 	client = server.accept
 	quadro = client.read()
 	client.close
@@ -65,6 +65,7 @@ while (transferencia_aberta)
 
 	# Extrai bytes dos bits
 	i = 0
+	qtdByte = 1
 	while (i < pacotes.length-1)
 		byte = ""
 		j = 0
@@ -75,6 +76,16 @@ while (transferencia_aberta)
 		end
 		final = pullAndDrag(final, byte.to_i(2).chr)
 		destino.print(byte.to_i(2).chr)
+
+		# Checa se o pacote e' um ack                              \\??
+		if qtdByte == 14
+			if byte.to_i(2).chr != "0"
+				destino.close()
+				tcpConnect(host,physical2transport_port,File.read("destino"))
+				destino = File.new("destino", "w")
+			end
+		end
+		qtdByte += 1
 
 		if final == "TRAILER" or final == "LASTSEG"
 			destino.close()
@@ -90,6 +101,6 @@ while (transferencia_aberta)
 
 end
 
-puts("\n\nMensagem HTTP recebida com sucesso do buffer de saida do cliente\n\n")
+puts("Envio do arquivo HTML para camada de transporte do cliente\n\n")
 
 

@@ -77,11 +77,11 @@ while (transferencia_aberta)
 		final = pullAndDrag(final, byte.to_i(2).chr)
 		destino.print(byte.to_i(2).chr)
 
-		# Checa se o pacote e' um ack 
-		if qtdByte == 13
+		# Checa se o pacote e' um ack                              \\??
+		if qtdByte == 14
 			if byte.to_i(2).chr != "0"
 				destino.close()
-				#tcpConnect(host,physical2transport_port,File.read("destino"))
+				tcpConnect(host,physical2transport_port,File.read("destino"))
 				destino = File.new("destino", "w")
 			end
 		end

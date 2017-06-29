@@ -1,9 +1,0 @@
-GET /teste.html HTTP/1.1
-Host: localhost:8090
-Connection: keep-alive
-Upgrade-Insecure-Requests: 1
-User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
-Accept-Encoding: gzip, deflate, sdch, br
-Accept-Language: pt-BR,pt;q=0.8,en-US;q=0.6,en;q=0.4
-Cookie: sessionid=znh5n2z4y9ivcka32u6q284y2sfpwe0k; csrftoken=YNjab0EZjkc0YTSazd4jjWEL6QnV2JGb2AEac5cAgOwM8EiQyj4nv0H05t4Kokwx

@@ -1,0 +1,639 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"trans",
+				"transport2app_content"
+			],
+			[
+				"win",
+				"window_buffer"
+			],
+			[
+				"sq",
+				"seqnum"
+			],
+			[
+				"ne",
+				"nextseqnum"
+			],
+			[
+				"physi",
+				"physical2transport_connection"
+			],
+			[
+				"col-md-",
+				"col-md-offset-4"
+			],
+			[
+				"post",
+				"post-usuario"
+			],
+			[
+				"post-",
+				"post-container"
+			],
+			[
+				"to",
+				"topicos_alta"
+			],
+			[
+				"rel",
+				"reload"
+			],
+			[
+				"class",
+				"classificacao"
+			],
+			[
+				"soma",
+				"somanota"
+			],
+			[
+				"clas",
+				"classificacao"
+			],
+			[
+				"cla",
+				"classificacao"
+			],
+			[
+				"valo",
+				"valor_avaliacao"
+			],
+			[
+				"padd",
+				"padding-left"
+			],
+			[
+				"wi",
+				"width"
+			],
+			[
+				"paddi",
+				"padding-left"
+			],
+			[
+				"g",
+				"GET"
+			],
+			[
+				"o",
+				"objects"
+			],
+			[
+				"user",
+				"username"
+			],
+			[
+				"font",
+				"font-weight"
+			],
+			[
+				"border-s",
+				"border-style"
+			],
+			[
+				"border",
+				"border-color"
+			],
+			[
+				"margin",
+				"margin-bottom"
+			],
+			[
+				"pul",
+				"pull-right"
+			],
+			[
+				"pull",
+				"pull-left"
+			],
+			[
+				"get",
+				"getElementById"
+			],
+			[
+				"pr",
+				"privacidade"
+			],
+			[
+				"post-con",
+				"post-conteudo"
+			],
+			[
+				"res",
+				"request"
+			],
+			[
+				"on",
+				"onKeyDown"
+			],
+			[
+				"form",
+				"form-control"
+			],
+			[
+				"comm",
+				"comment-container"
+			],
+			[
+				"tex",
+				"textarea"
+			],
+			[
+				"form-",
+				"form-comentario"
+			],
+			[
+				"con",
+				"conteudo"
+			],
+			[
+				"non",
+				"non-margin"
+			],
+			[
+				"TIPO_",
+				"TIPO_POST"
+			],
+			[
+				"tota",
+				"total_interval"
+			],
+			[
+				"tot",
+				"total_interval"
+			],
+			[
+				"ma",
+				"main\tmain()"
+			],
+			[
+				"prin",
+				"println"
+			],
+			[
+				"Pat",
+				"PatNoInt"
+			],
+			[
+				"pala",
+				"palavraCompleta"
+			],
+			[
+				"pal",
+				"palavraCompleta"
+			],
+			[
+				"mul",
+				"multiplexaPalavra"
+			],
+			[
+				"nb",
+				"nbitsChave"
+			],
+			[
+				"char",
+				"charAt"
+			],
+			[
+				"cria",
+				"criaNoInt"
+			],
+			[
+				"cha",
+				"charAt"
+			],
+			[
+				"insere",
+				"insereInterno"
+			],
+			[
+				"no",
+				"non-margin"
+			],
+			[
+				"pad",
+				"padding"
+			],
+			[
+				"bord",
+				"border"
+			],
+			[
+				"back",
+				"background-color"
+			],
+			[
+				"hr",
+				"hr-black"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/home/matheus/cefet/semestres/6/laboratorios/redes/implementacao-camadas-de-redes/servidor/fisica/buffer_entrada.rb",
+			"settings":
+			{
+				"buffer_size": 2163,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/home/matheus/cefet/semestres/6/laboratorios/redes/implementacao-camadas-de-redes",
+		"/home/matheus/cefet/semestres/6/laboratorios/redes/implementacao-camadas-de-redes/cliente",
+		"/home/matheus/cefet/semestres/6/laboratorios/redes/implementacao-camadas-de-redes/cliente/aplicacao",
+		"/home/matheus/cefet/semestres/6/laboratorios/redes/implementacao-camadas-de-redes/cliente/fisica",
+		"/home/matheus/cefet/semestres/6/laboratorios/redes/implementacao-camadas-de-redes/cliente/transporte",
+		"/home/matheus/cefet/semestres/6/laboratorios/redes/implementacao-camadas-de-redes/servidor",
+		"/home/matheus/cefet/semestres/6/laboratorios/redes/implementacao-camadas-de-redes/servidor/fisica",
+		"/home/matheus/cefet/semestres/6/laboratorios/redes/implementacao-camadas-de-redes/servidor/transporte"
+	],
+	"file_history":
+	[
+		"/home/matheus/cefet/semestres/6/laboratorios/redes/implementacao-camadas-de-redes/servidor/fisica/buffer_saida.rb",
+		"/home/matheus/cefet/semestres/6/laboratorios/redes/implementacao-camadas-de-redes/servidor/transporte/TransportServer.go",
+		"/home/matheus/cefet/semestres/6/laboratorios/redes/implementacao-camadas-de-redes/servidor/transporte/TransportClient.go",
+		"/home/matheus/cefet/semestres/6/laboratorios/redes/implementacao-camadas-de-redes/servidor/aplicacao/processoServidor.php",
+		"/home/matheus/cefet/semestres/6/laboratorios/redes/implementacao-camadas-de-redes/cliente/transporte/TransportServer.go",
+		"/home/matheus/cefet/semestres/6/laboratorios/redes/implementacao-camadas-de-redes/cliente/aplicacao/processoCliente.php",
+		"/home/matheus/cefet/semestres/6/laboratorios/redes/implementacao-camadas-de-redes/servidor/transporte/UDPServer.go",
+		"/home/matheus/cefet/semestres/6/laboratorios/redes/implementacao-camadas-de-redes/cliente/fisica/buffer_entrada.rb",
+		"/home/matheus/cefet/semestres/6/laboratorios/redes/implementacao-camadas-de-redes/cliente/transporte/UDPClient.go",
+		"/home/matheus/cefet/semestres/6/laboratorios/redes/implementacao-camadas-de-redes/servidor/teste.html",
+		"/home/matheus/cefet/semestres/6/laboratorios/redes/implementacao-camadas-de-redes/cliente/fisica/buffer_saida.rb",
+		"/home/matheus/cefet/semestres/6/laboratorios/redes/implementacao-camadas-de-redes/servidor/fisica/buffer_entrada.rb",
+		"/home/matheus/cefet/semestres/6/laboratorios/engenhariaSoftware/HiFit/HiFit/static/templates/visualizar_postagens.html",
+		"/home/matheus/cefet/Maratona/Contests/Codeforces/Div2-421/a.cpp",
+		"/home/matheus/cefet/Maratona/Contests/Codeforces/Div2-421/b.cpp",
+		"/home/matheus/cefet/semestres/6/laboratorios/engenhariaSoftware/HiFit/HiFit/static/templates/login.html",
+		"/media/matheus/F0B1-850A/copy.bat",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 05e06 atrasada/Pratica05/src/pratica05/JCiclo.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 05e06 atrasada/Pratica05/src/pratica05/JGrafo.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 05e06 atrasada/Pratica06/src/pratica06/JAGM.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 05e06/Pratica-5-6-TulioAssis/Pratica05/Pratica05/src/pratica05/JCiclo.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 05e06/Pratica-5-6-TulioAssis/Pratica05/Pratica05/src/pratica05/JGrafo.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 05e06/pratica5/src/pratica5/JGrafo.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 05e06/pratica5/src/pratica5/Pratica5.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 05e06/pratica06/src/pratica06/FPHeapMinIndireto.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 05e06/pratica06/src/pratica06/JGrafo.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 05e06/pratica06/src/pratica06/JAGM.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 05e06/pratica05/src/pratica05/JCiclo.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 05e06/pratica05/src/pratica05/JGrafo.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 05e06/pratica05/src/pratica05/pratica05.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 05e06/Pratica 05/Pratica05/src/pratica05/Pratica05.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 05e06/Pratica 05/Pratica05/src/pratica05/JGrafo.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 05e06/Pratica 05/Pratica05/src/pratica05/JCiclo.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 05e06/AEDS Prática05/Pratica 5/src/pratica/pkg5/BuscaProfundidade.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 05e06/AEDS Prática05/Pratica 5/src/pratica/pkg5/JGrafo.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 05e06/Praticas5e6_AnaPaulaVictoy/Pratica 5/Pratica5/src/pratica5/JCiclo.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 05e06/Praticas5e6_AnaPaulaVictoy/Pratica 5/Pratica5/src/pratica5/JGrafo.java",
+		"/home/matheus/Dicas para CTF",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 05e06/Prática05_e_06_Amanda_Costa/Prática06_Amanda_Costa/pratica06/src/pratica06/JAGM.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 05e06/Prática05_e_06_Amanda_Costa/prática05_Amanda_/Pratica05_Amanda/src/matrizadj/BuscaProfundidade.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 05e06/Prática05_e_06_Amanda_Costa/prática05_Amanda_/Pratica05_Amanda/src/Principal/Teste.java",
+		"/home/matheus/cefet/Monitoria/TP2/tp2.java",
+		"/home/matheus/teste.cpp",
+		"/home/matheus/cefet/Monitoria/TP2/estrutura",
+		"/home/matheus/cefet/Monitoria/TP2/teste.java",
+		"/home/matheus/cefet/Monitoria/Pratica3/Pratica3.java",
+		"/home/matheus/cefet/semestres/6/laboratorios/engenhariaSoftware/HiFit/HiFit/HiFit/static/templates/perfil.html",
+		"/home/matheus/cefet/semestres/6/laboratorios/engenhariaSoftware/HiFit/HiFit/HiFit/static/templates/visualizar_postagens.html",
+		"/home/matheus/cefet/semestres/6/laboratorios/engenhariaSoftware/HiFit/HiFit/HiFit/usuario/views.py",
+		"/home/matheus/cefet/semestres/6/laboratorios/engenhariaSoftware/HiFit/HiFit/usuario/views.py",
+		"/home/matheus/cefet/semestres/6/laboratorios/engenhariaSoftware/HiFit/HiFit/instrutor/views.py",
+		"/home/matheus/cefet/semestres/6/laboratorios/engenhariaSoftware/HiFit/HiFit/aluno/views.py",
+		"/home/matheus/cefet/semestres/6/laboratorios/engenhariaSoftware/HiFit/HiFit/HiFit/usuario/views.",
+		"/home/matheus/cefet/semestres/6/laboratorios/engenhariaSoftware/HiFit/HiFit/static/js/avalia_usuario.js",
+		"/home/matheus/cefet/semestres/6/laboratorios/engenhariaSoftware/HiFit/HiFit/static/js/posts.js",
+		"/home/matheus/cefet/semestres/6/laboratorios/engenhariaSoftware/HiFit/HiFit/static/templates/perfil.html",
+		"/home/matheus/cefet/semestres/6/laboratorios/engenhariaSoftware/HiFit/HiFit/usuario/models.py",
+		"/home/matheus/cefet/semestres/6/laboratorios/engenhariaSoftware/cópia de HiFit/HiFit/usuario/views.py",
+		"/home/matheus/cefet/semestres/6/laboratorios/engenhariaSoftware/HiFit/HiFit/static/templates/base.html",
+		"/home/matheus/cefet/semestres/6/laboratorios/engenhariaSoftware/HiFit/HiFit/static/templates/buscar_recomendacoes.html",
+		"/home/matheus/cefet/semestres/6/laboratorios/engenhariaSoftware/HiFit/HiFit/static/js/busca_recomendacoes.js",
+		"/home/matheus/cefet/semestres/6/laboratorios/engenhariaSoftware/HiFit/HiFit/HiFit/urls.py",
+		"/home/matheus/cefet/semestres/6/laboratorios/engenhariaSoftware/HiFit/HiFit/usuario/urls.py",
+		"/home/matheus/cefet/semestres/6/laboratorios/engenhariaSoftware/HiFit/HiFit/static/js/regras.js",
+		"/home/matheus/cefet/semestres/6/laboratorios/engenhariaSoftware/HiFit/HiFit/static/js/postagem.js",
+		"/home/matheus/cefet/semestres/6/laboratorios/engenhariaSoftware/HiFit/HiFit/usuario/forms.py",
+		"/home/matheus/cefet/semestres/6/laboratorios/engenhariaSoftware/HiFit/HiFit/static/templates/regras.html",
+		"/home/matheus/cefet/semestres/6/laboratorios/engenhariaSoftware/HiFit/HiFit/usuario/views.",
+		"/home/matheus/cefet/semestres/6/laboratorios/engenhariaSoftware/HiFit/HiFit/static/templates/gerenciamento_instrutor.html",
+		"/home/matheus/cefet/TrabalhosPorFora/pc1/principal.cpp",
+		"/home/matheus/cefet/TrabalhosPorFora/pc1/main.cpp",
+		"/home/matheus/cefet/semestres/6/laboratorios/engenhariaSoftware/HiFit/HiFit/static/templates/gerenciamento_aluno.html",
+		"/home/matheus/cefet/semestres/6/laboratorios/engenhariaSoftware/HiFit/HiFit/static/templates/gerenciar.html",
+		"/home/matheus/cefet/semestres/6/laboratorios/engenhariaSoftware/HiFit/HiFit/static/templates/cadastro.html",
+		"/home/matheus/cefet/semestres/6/laboratorios/engenhariaSoftware/HiFit/HiFit/instrutor/forms.py",
+		"/home/matheus/cefet/Monitoria/Correcoes/TP1/TrabalhoPratico1_AnaPaulaVictoy_JulianeGuedes/Trabalho1/src/trabalho1/ExtraiPalavra.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/TP1/TrabalhoPratico1_AnaPaulaVictoy_JulianeGuedes/Trabalho1/src/trabalho1/Trabalho1.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/TP1/TrabalhoPratico1_AnaPaulaVictoy_JulianeGuedes/Trabalho1/src/trabalho1/ArvorePatricia.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/TP1/tp1_JoaoMatos_JonathanHenrique_ViniciusSilveira/teste/src/teste/Main.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/TP1/TP1/src/tp1/Main.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/TP1/TP1_Luiza_Marcela_Tulio/ArvorePatricia-AEDs-master/Arvore patricia/src/TP/ArvorePatricia.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/TP1/Trab1_Amanda_e_Renato_/Trab1_Amanda_e_Renato/TAD Arquivo Invertido.h",
+		"/home/matheus/cefet/Monitoria/Correcoes/TP1/Trab1_Amanda_e_Renato_/Trab1_Amanda_e_Renato/TAD ArvorePatricia.h",
+		"/home/matheus/cefet/Monitoria/Correcoes/TP1/Trab1_Amanda_e_Renato_/Trab1_Amanda_e_Renato/main.cpp",
+		"/home/matheus/cefet/Maratona/teamNULL/uri/1545.cpp",
+		"/home/matheus/cefet/Maratona/teamNULL/hackerearth/rhezoandprime.cpp",
+		"/home/matheus/cefet/Maratona/teamNULL/hackerearth/xsqaureandcoin.cpp",
+		"/home/matheus/cefet/Maratona/teamNULL/hackerearth/intelligentgirl.cpp",
+		"/home/matheus/cefet/Maratona/teamNULL/hackerearth/samuandshop.cpp",
+		"/home/matheus/cefet/Maratona/teamNULL/hackerearth/choosingjudges.cpp",
+		"/home/matheus/cefet/Maratona/teamNULL/hackerearth/winthegame.cpp",
+		"/home/matheus/cefet/Maratona/teamNULL/hackerearth/wackyworkouts.cpp",
+		"/home/matheus/cefet/Maratona/teamNULL/hackerearth/numberRs.cpp",
+		"/home/matheus/cefet/Maratona/teamNULL/hackerRank/sherlockCost.cpp",
+		"/home/matheus/cefet/Maratona/teamNULL/hackerRank/candies.cpp",
+		"/home/matheus/cefet/Maratona/teamNULL/codeforces/711C.cpp",
+		"/home/matheus/cefet/Maratona/teamNULL/uri/1522.cpp",
+		"/home/matheus/cefet/Maratona/teamNULL/uri/2241.cpp",
+		"/home/matheus/cefet/Maratona/teamNULL/uri/G/output/G_33",
+		"/home/matheus/cefet/Maratona/teamNULL/811C.cpp",
+		"/home/matheus/cefet/Maratona/teamNULL/codeforces/811C.cpp",
+		"/home/matheus/cefet/Maratona/teamNULL/codeforces/772C.cpp",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04 atrasada/Pratica3/src/pratica3/Pratica3.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Prática03/src/prática03/Prática03.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04 atrasada/drive-download-20170520T022805Z-001/AEDS Prática03/src/prática03/Prática03.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04 atrasada/TP4/main.cpp",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04 atrasada/Pratica 04/Pratica04/src/pratica04/ArvoreB.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04 atrasada/drive-download-20170520T022805Z-001/AEDS Prática04/Prática04/src/prática04/Prática04.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Pratica03/HeapSort/Pratica3/src/pratica3/Pratica3.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04 atrasada/Pratica - 03/Pratica03/src/pratica03/JHeap.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04 atrasada/Pratica - 03/Pratica03/src/pratica03/JHeapSort.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04 atrasada/Pratica 04/Pratica04/src/pratica04/Pratica04.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04 atrasada/Pratica - 03/Pratica03/src/pratica03/Pratica03.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04 atrasada/Pratica 04/Pratica04/src/pratica04/Item.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04 atrasada/TP3/main.cpp",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/pratica3_pratica4_ViniciusHenriqueSilveira/pratica3/codigo/src/Heapsort/Main.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/pratica3_pratica4_ViniciusHenriqueSilveira/pratica4/codigo/src/Main/Main.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Pratica-3-4-TulioAssis/Pratica04/Pratica4/src/pratica4/Pratica4.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Pratica-3-4-TulioAssis/Pratica03/Pratica3/src/pratica3/Pratica3.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Pratica-3-4-TulioAssis/Pratica04/Pratica4/src/pratica4/ArvoreSBB.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Praticas3e4-SarahRodrigues/Pratica04/src/pratica04/Pratica04.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Praticas3e4-SarahRodrigues/Pratica03/src/pratica03/Pratica03.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Práticas 03e04/Prática04/src/prática04/principal.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Práticas 03e04/Prática03/src/Item/principal.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Projeto3/src/projeto3/Projeto3.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Projeto3/src/projeto3/JHeap.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Pr�tica03/src/pratica03/Pratica03.java",
+		"/home/matheus/cefet/Monitoria/Correcoes/Praticas 03e04/Pratica03e04_JoaoSoares/Pratica03/src/pratica03/Pratica03.java"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 90.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"app2transport_address",
+			"buffer",
+			"transport2app_port",
+			"udt_send",
+			"Rdt_buffer",
+			".Sring()",
+			"physical2transport_listener",
+			"rdt_rcv",
+			"udt_send",
+			"sleep",
+			"tcpConnect",
+			"== 1",
+			"render",
+			"from",
+			"===",
+			"seguindo",
+			"associar",
+			")\n",
+			"red",
+			"trash",
+			"red",
+			"recomen",
+			"print",
+			"{{",
+			"somanota",
+			"    ",
+			"modal-confirma-exclusao-post",
+			"modal-confi",
+			"excluir",
+			"star",
+			"rating",
+			"col-md-4",
+			"-star",
+			"post",
+			"assoc",
+			"head",
+			"segui",
+			"seguin",
+			".all",
+			"Post.objects.all()",
+			"edita",
+			"print",
+			"excluir",
+			"cadastro",
+			"    ",
+			"perfil",
+			"login",
+			"fmt.Println",
+			"ftm.Println",
+			"ftm.Prinln",
+			"a",
+			"}",
+			"{",
+			"(",
+			")",
+			"int",
+			"front",
+			"push",
+			"pop",
+			"top"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"\t",
+			"print",
+			"p",
+			"long long",
+			"back",
+			"push_back",
+			"pop_back",
+			"front"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/home/matheus/cefet/semestres/6/laboratorios/redes/implementacao-camadas-de-redes/servidor/fisica/buffer_entrada.rb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2163,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								458,
+								458
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Ruby/Ruby.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 40.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 27.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "aplicacao/processoCliente.sublime-project",
+	"replace":
+	{
+		"height": 50.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 392.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 392.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": false,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 253.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

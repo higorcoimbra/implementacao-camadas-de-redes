@@ -32,16 +32,16 @@ def tcpConnect(host, port, mensagem)
 	server.close()
 end
 
-def rcv_pkt(transport2physical_port)
+def rcv_pkt(transport2physical_port, interface)
 	#Cria um socket para transmissao da mensagem HTTP do processo cliente da aplicacao (navegador)..
 	#..para a camada fisica
 	print("Aguardando conexao da camada de transporte na porta ", transport2physical_port," ...")
-	interface = TCPServer.open(transport2physical_port)
+	#interface = TCPServer.open(transport2physical_port)
 	application = interface.accept
 	print("Aguardando recebimento de pacote na porta ", transport2physical_port)
 	mensagem = application.read()
 	puts("\n\nSegmento recebido com sucesso da camada de transporte cliente\n\n")
-	interface.close()
+	#interface.close()
 	return mensagem
 end
 
@@ -122,6 +122,9 @@ package_index = 1
 vestigio = ""
 last_seg = false
 
+interface = TCPServer.open(transport2physical_port)
+
+
 while transferencia_aberta
 	# Cria pacote
 	# - Escreve cabecalho
@@ -149,7 +152,7 @@ while transferencia_aberta
 	vestigio = ""
 	if not last_seg
 		while j < dataSize
-			pkt = rcv_pkt(transport2physical_port)
+			pkt = rcv_pkt(transport2physical_port, interface)
 			for p in 0..(pkt.length-1)
 				if j >= dataSize
 					vestigio = pkt[p..pkt.length]
@@ -162,7 +165,8 @@ while transferencia_aberta
 
 
 			# Caso seja um pacote ACK
-			if pkt[12] != 0
+			if pkt[13] != 0
+				print("ACK: ", pkt[13])
 				break
 			else
 				# Caso seja um pacote com dados
@@ -183,17 +187,17 @@ while transferencia_aberta
 	pdu = File.read('pacote.txt')
 
 	# Verificacao se ha colisao
-	colisao = rand(1...100) > 70
-	while colisao
-		puts("Ocorreu colisao no envio do pacote "+package_index.to_s+"\n")
-		sleep(rand(1...100)/100)
-		puts("Reenvio do pacote "+package_index.to_s+"\n")
-		colisao = rand(1...100) > 70
-	end
+	# colisao = rand(1...100) > 70
+	# while colisao
+	# 	puts("Ocorreu colisao no envio do pacote "+package_index.to_s+"\n")
+	# 	sleep(rand(1...100)/100)
+	# 	puts("Reenvio do pacote "+package_index.to_s+"\n")
+	# 	colisao = rand(1...100) > 70
+	# end
 
 	# Envio da pdu
 	tcpConnect(host, port, pdu)
-	puts("Envio do pacote "+package_index.to_s+" realizado com sucesso\n")
+	puts("Envio do quador "+package_index.to_s+" realizado com sucesso\n")
 	package_index += 1
 
 end
