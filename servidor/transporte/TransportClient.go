@@ -66,13 +66,21 @@ func makeSegment(header string, data string, len_rdt_buffer int)(string){
     return segment.String()
 }
 
-func udt_send(segment string,transport2physical_address string){
-    print("\nEnviando pacote para a camada física...")
-    physical_port, err := net.ResolveTCPAddr("tcp", transport2physical_address)
+func udt_send(segment string,transport2network_address string){
+    print("\nEnviando pacote para a camada de rede...")
+    print(transport2network_address)
+    physical_port, err := net.ResolveTCPAddr("tcp", transport2network_address)
     CheckError(err)
-    print("\nDialTCP")
+    print("\nDialTCP\n")
     physical_connection, err := net.DialTCP("tcp", nil, physical_port)
-    print("\nWrite")
+    for{
+        if err == nil{
+           break 
+        }
+        physical_connection, err = net.DialTCP("tcp", nil, physical_port)
+    }
+    CheckError(err)
+    print("\nWrite\n")
     _, err = physical_connection.Write([]byte(segment))
     //CheckError(err)
     physical_connection.Close()
@@ -97,8 +105,8 @@ func main() {
 
     var transport_header bytes.Buffer
     var pdu_content bytes.Buffer
-    app2transport_address := ":8007"
-    transport2physical_address := ":8008"
+    app2transport_address := ":8008"
+    transport2network_address := ":8009"
     physical2transport_address := ":8002"
     source_port := app2transport_address
     destination_port := ":8001"
@@ -126,9 +134,9 @@ func main() {
         pdu_content.WriteString("TRAILER")
         //print(pdu_content.String())
 
-        //enviando pacote a camada física
-        print("Enviando pacote para a camada física...")
-        physical_port, err := net.ResolveTCPAddr("tcp", transport2physical_address)
+        //enviando pacote a camada de rede
+        print("Enviando pacote para a camada de rede...")
+        physical_port, err := net.ResolveTCPAddr("tcp", transport2network_address)
         CheckError(err)
         physical_connection, err := net.DialTCP("tcp", nil, physical_port)
         CheckError(err)
@@ -169,17 +177,17 @@ func main() {
         base := 1
         string_slice := make([]byte,0)
         rdt_buffer := make([]string, 0)
-        timeout := int64(1000000000)
-        stop_timer := true
+        //timeout := int64(1000000000)
+        //stop_timer := true
 
         //var ack int
         var data string
         var segment string
         var header bytes.Buffer
 
-        var current int64
-        var total_interval int64
-        var start_timer int64
+        //var current int64
+        //var total_interval int64
+        //var start_timer int64
         //var interval int64
 
         j := 0
@@ -208,28 +216,35 @@ func main() {
 
         print("\ntamanho rdt buffer\n")
         print(len(rdt_buffer))
-        
-        for ; len(rdt_buffer) != 0 || len(window_buffer) != 0; {
+
+
+        //physical_connection, _ := net.Dial("tcp", "127.0.0.1"+transport2network_address)
+        for ; len(rdt_buffer) != 0 ; {
             if(len(rdt_buffer) > 0){
                 data = rdt_buffer[0]
             }
+
             /*
                 Envio de dados caso o proximo pacote esteja dentro da janela
             */
 
             if(nextseqnum < base+WINDOW_SIZE){
-                 if (len(rdt_buffer) > 0) {
+                if (len(rdt_buffer) > 0) {
                     rdt_buffer = rdt_buffer[1:]
                 }
                 header = makeTransportHeaderTCP(source_port,destination_port,nextseqnum)
                 segment = makeSegment(header.String(), data, len(rdt_buffer))
-                udt_send(segment,transport2physical_address)
+                print("antes do Fprintf\n")
+                print(segment,"\n")
+                udt_send(segment,transport2network_address)
+                //fmt.Fprintf(physical_connection, segment)
+                print("depois do Fprintf\n")
                 window_buffer = append(window_buffer,segment)
-                if(base == nextseqnum){
-                    stop_timer = false
-                    start_timer = time.Now().UnixNano()
-                    total_interval = 0
-                }
+                // if(base == nextseqnum){
+                //  stop_timer = false
+                //     start_timer = time.Now().UnixNano()
+                //     total_interval = 0
+                // }
                 nextseqnum = nextseqnum + 1
                 base += 1
             }
@@ -237,6 +252,7 @@ func main() {
             /*
                 Verificacao do timeout do pacote base
             */
+            /*
             if (stop_timer == true) {
                 current = 0
             } else {
@@ -249,7 +265,7 @@ func main() {
                 //start_timer = time.Now().UnixNano()
                 //total_interval = 0
                 print("\n", nextseqnum)
-                // physical_port, err := net.ResolveTCPAddr("tcp", transport2physical_address)
+                // physical_port, err := net.ResolveTCPAddr("tcp", transport2network_address)
                 // CheckError(err)
                 // physical_connection, err := net.DialTCP("tcp", nil, physical_port)
                 // CheckError(err)
@@ -257,10 +273,10 @@ func main() {
                     //_, err = physical_connection.Write([]byte(window_buffer[i]))
                     //CheckError(err)
                     print(window_buffer[i])
-                    udt_send(window_buffer[i], transport2physical_address)
+                    udt_send(window_buffer[i], transport2network_address)
                 }
                 //physical_connection.Close()    
-            }
+            }*/
 
             /*
                 Verificacao de recepcao de ack do destino

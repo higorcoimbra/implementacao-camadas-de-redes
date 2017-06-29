@@ -2,9 +2,10 @@
 $host = "127.0.0.1";
 $http_port = 80;
 $transport_app_port_communication = 8007;
+$app_transport_port_communication = 8008;
 
 /*
- * Recebe mensagem HTTP da camada fisica
+ * Recebe mensagem HTTP da camada de transporte
  */
 
 //sem timeout!
@@ -18,8 +19,9 @@ $valid = socket_bind($socket, $host, $transport_app_port_communication) or die("
 $valid = socket_listen($socket, 1) or die("Nao foi possivel estabelecer a escuta do socket\n");
 // Aceita conexões na porta 8002
 $spawn = socket_accept($socket) or die("Nao foi possivel conectar\n");
-// Le a mensagem de requisição HTTP da camada fisica do servidor
+// Le a mensagem de requisição HTTP da camada de transporte do servidor
 $mensagemHTTP = socket_read($spawn, $transport_app_port_communication) or die("Nao foi possivel ler a entrada\n");
+echo $mensagemHTTP;
 socket_close($socket);
 socket_close($spawn);
 echo "\n\nMensagem HTTP recebida com sucesso da camada de trasnporte\n\n";
@@ -45,10 +47,9 @@ $content = $http_header.$content."\0";
 echo "Conteudo da resposta HTTP:\n";
 echo $content."\n\n";
 
-// Envia arquivo html para o buffer de saida do servidor
 echo "Envio do arquivo HTML para a camada de transporte\n\n";
 $socket = socket_create(AF_INET, SOCK_DGRAM, 0) or die("Nao foi possivel criar o socket\n");
-$valid = socket_connect($socket, $host, $transport_app_port_communication) or die ("Nao foi possivel conectar ao navegador");
+$valid = socket_connect($socket, $host, $app_transport_port_communication) or die ("Nao foi possivel conectar ao navegador");
 $valid = socket_write($socket, $content) or die ("Nao foi possivel enviar mensagem");
 socket_close($socket);
 

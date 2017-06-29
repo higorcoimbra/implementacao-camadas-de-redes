@@ -1,7 +1,8 @@
 <?php
 $host = "127.0.0.1";
 $http_port = $argv[1]; // Porta de comunicacao com o browser
-$transport_app_port_communication = 8001;
+$transport_app_port_communication = 8014;
+$app_transport_port_communication = 8001;
 
 /*
  * Recebe mensagem HTTP do navegador
@@ -26,12 +27,12 @@ echo "Mensagem HTTP de requisicao recebida pelo browser:\n";
 echo $mensagemHTTP."\n";
 
 /*
- * Transmitindo mensagem HTTP a camada fisica
+ * Transmitindo mensagem HTTP a camada de transporte
  */
 
 echo "Envio da mensagem HTTP da camada de aplicacao cliente para camada de transporte do cliente\n\n";
 $socket = socket_create(AF_INET, SOCK_DGRAM, 0) or die("Nao foi possivel criar o socket\n");
-$valid = socket_connect($socket, $host, $transport_app_port_communication) or die ("Nao foi possivel conectar a camada de transporte\n");
+$valid = socket_connect($socket, $host, $app_transport_port_communication) or die ("Nao foi possivel conectar a camada de transporte\n");
 $valid = socket_write($socket, $mensagemHTTP) or die ("Nao foi possivel enviar mensagem");
 socket_close($socket);
 

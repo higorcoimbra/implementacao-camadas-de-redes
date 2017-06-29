@@ -32,13 +32,13 @@ def tcpConnect(host, port, mensagem)
 	server.close()
 end
 
-def rcv_pkt(transport2physical_port, interface)
+def rcv_pkt(network2physical_port, interface)
 	#Cria um socket para transmissao da mensagem HTTP do processo cliente da aplicacao (navegador)..
 	#..para a camada fisica
-	print("Aguardando conexao da camada de transporte na porta ", transport2physical_port," ...")
-	#interface = TCPServer.open(transport2physical_port)
+	print("Aguardando conexao da camada de transporte na porta ", network2physical_port," ...")
+	#interface = TCPServer.open(network2physical_port)
 	application = interface.accept
-	print("Aguardando recebimento de pacote na porta ", transport2physical_port)
+	print("Aguardando recebimento de pacote na porta ", network2physical_port)
 	mensagem = application.read()
 	puts("\n\nSegmento recebido com sucesso da camada de transporte cliente\n\n")
 	#interface.close()
@@ -62,8 +62,8 @@ headerSize = 22
 
 # Variaveis de configuracao de host
 host = '127.0.0.1'
-port = 8000
-transport2physical_port = 8006
+port = 8004
+network2physical_port = 8003
 macClient = Mac.addr
 macServer = 'aa:aa:aa:aa:aa:aa'
 
@@ -122,7 +122,7 @@ package_index = 1
 vestigio = ""
 last_seg = false
 
-interface = TCPServer.open(transport2physical_port)
+interface = TCPServer.open(network2physical_port)
 
 
 while transferencia_aberta
@@ -152,7 +152,8 @@ while transferencia_aberta
 	vestigio = ""
 	if not last_seg
 		while j < dataSize
-			pkt = rcv_pkt(transport2physical_port, interface)
+			pkt = rcv_pkt(network2physical_port, interface)
+			print(pkt)
 			for p in 0..(pkt.length-1)
 				if j >= dataSize
 					vestigio = pkt[p..pkt.length]

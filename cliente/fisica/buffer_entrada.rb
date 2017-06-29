@@ -22,8 +22,8 @@ def pullAndDrag(final, byte)
 end
 # Variaveis de configuracao de host
 host = '127.0.0.1'
-port = 8004
-physical2transport_port = 8009
+port = 8011
+physical2transport_port = 8012
 
 # Variaveis de transmissao
 transmissionServer = 100
@@ -78,13 +78,13 @@ while (transferencia_aberta)
 		destino.print(byte.to_i(2).chr)
 
 		# Checa se o pacote e' um ack                              \\??
-		if qtdByte == 14
-			if byte.to_i(2).chr != "0"
-				destino.close()
-				tcpConnect(host,physical2transport_port,File.read("destino"))
-				destino = File.new("destino", "w")
-			end
-		end
+		# if qtdByte == 14
+		# 	if byte.to_i(2).chr != "0"
+		# 		destino.close()
+		# 		tcpConnect(host,physical2transport_port,File.read("destino"))
+		# 		destino = File.new("destino", "w")
+		# 	end
+		# end
 		qtdByte += 1
 
 		if final == "TRAILER" or final == "LASTSEG"

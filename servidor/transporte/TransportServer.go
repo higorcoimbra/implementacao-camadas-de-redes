@@ -69,8 +69,14 @@ func extract(rcvpkt string)(string,string,string,string){
     for i := 3; i < len(dados)-1; i++ {
         data_aplication += dados[i] + "\n"
     }  
-
-    data_aplication = data_aplication[:len(data_aplication)-8]
+    print("\n-----data aplication----\n")
+    print(data_aplication)
+    print("\n-----------\n")
+    if(strings.Contains(data_aplication,"LASTSEG")){
+        data_aplication = data_aplication[:strings.Index(data_aplication,"LASTSEG")]
+    }else{
+        data_aplication = data_aplication[:strings.Index(data_aplication,"TRAILER")]
+    }
 
     return portas[0],portas[1],dados[1],data_aplication
 }
@@ -154,8 +160,9 @@ func (a BySequenceNumber) Less(i, j int) bool { return a[i].SequenceNumber < a[j
 func main(){
     print := fmt.Println
 
-    physical2transport_address := ":8002"
+    physical2transport_address := ":8006"
     transport2physical_address := ":8008"
+    transport2app_address := ":8007"
     buf := make([]byte, 1024)
 
     var opcao_trasmissao string
@@ -276,7 +283,7 @@ func main(){
 
         //enviando conteúdo para a camada de aplicação
         print("Enviando conteúdo para a camada de aplicação...")
-        transport2app_port,err := net.ResolveTCPAddr("tcp",":8007")
+        transport2app_port,err := net.ResolveTCPAddr("tcp",transport2app_address)
         CheckError(err)
         transport2app_connection, err := net.DialTCP("tcp", nil, transport2app_port)
         CheckError(err)

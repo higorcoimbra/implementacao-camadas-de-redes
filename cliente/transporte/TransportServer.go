@@ -160,27 +160,28 @@ func (a BySequenceNumber) Less(i, j int) bool { return a[i].SequenceNumber < a[j
 func main(){
     print := fmt.Println
 
-    physical2transport_address := ":8009"
+    network2transport_address := ":8013"
     transport2physical_address := ":8006"
+    transport2app_address := ":8014"
     buf := make([]byte, 1024)
 
     var opcao_trasmissao string
     opcao_trasmissao = "tcp"
     
-    physical2transport_port,err := net.ResolveTCPAddr("tcp",physical2transport_address)
+    network2transport_port,err := net.ResolveTCPAddr("tcp",network2transport_address)
     CheckError(err)
-    physical2transport_listener, err := net.ListenTCP("tcp", physical2transport_port)
+    network2transport_listener, err := net.ListenTCP("tcp", network2transport_port)
     CheckError(err)
 
     if opcao_trasmissao == "udp" {
         //lendo dados da camada física
-        physical2transport_connection, err := physical2transport_listener.Accept() 
+        network2transport_connection, err := network2transport_listener.Accept() 
         CheckError(err)
-        buffer_size,err := physical2transport_connection.Read(buf)
+        buffer_size,err := network2transport_connection.Read(buf)
         CheckError(err)
         print(string(buf[0:buffer_size]))
         print("Mensagem recebida com sucesso da camada física...")
-        physical2transport_connection.Close()
+        network2transport_connection.Close()
 
         //enviando conteúdo do pacote para a camada de aplicação
         print("Enviando pacote para a camada de aplicação...")
@@ -240,9 +241,9 @@ func main(){
             */
 
             print("Recebendo segmento da camada física...")
-            physical2transport_connection, err := physical2transport_listener.Accept() 
+            network2transport_connection, err := network2transport_listener.Accept() 
             CheckError(err)
-            _,err = physical2transport_connection.Read(rcvpkt)
+            _,err = network2transport_connection.Read(rcvpkt)
             //print("\n-------- Conteudo do pacote convertido em string -----\n")
             //print(string(rcvpkt))
             rcvpkt_formated := convert(rcvpkt)
@@ -269,7 +270,7 @@ func main(){
                 index := strings.Index(rcvpkt_formated,"LASTSEG")
                 print(rcvpkt_formated[index:index+len("LASTSEG")])
                 if (rcvpkt_formated[index:index+len("LASTSEG")] == "LASTSEG") {
-                    physical2transport_connection.Close()
+                    network2transport_connection.Close()
                     break;
                 }
             }
@@ -286,7 +287,7 @@ func main(){
 
         //enviando conteúdo para a camada de aplicação
         print("Enviando conteúdo para a camada de aplicação...")
-        transport2app_port,err := net.ResolveTCPAddr("tcp",":8001")
+        transport2app_port,err := net.ResolveTCPAddr("tcp",transport2app_address)
         CheckError(err)
         transport2app_connection, err := net.DialTCP("tcp", nil, transport2app_port)
         CheckError(err)
