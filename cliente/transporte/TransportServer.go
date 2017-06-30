@@ -4,10 +4,7 @@ import (
     "fmt"
     "net"
     "os"
-    "bytes"
     "strings"
-    "strconv"
-    "sort"
 )
 
 /* A Simple function to verify error */
@@ -16,45 +13,6 @@ func CheckError(err error) {
         fmt.Println("Error: " , err)
         os.Exit(0)
     }
-}
-
-func makeTransportHeader(source_port string,destination_port string,buffer_size int)(header bytes.Buffer){
-    header.WriteString(strings.Split(source_port,":")[1])
-    header.WriteString(" ")
-    header.WriteString(strings.Split(destination_port,":")[1])
-    header.WriteString("\n")
-    header.WriteString(strconv.Itoa(buffer_size+len(source_port)+len(destination_port)))
-    header.WriteString("\n")
-    return header
-}
-
-
-func getSourceDestinationPort(header string)(string,string){
-    var destination_port bytes.Buffer
-    var source_port bytes.Buffer
-    destination_port.WriteString(":")
-    destination_port.WriteString(strings.Split(header," ")[1])
-    source_port.WriteString(":")
-    source_port.WriteString(strings.Split(header," ")[0])
-    return source_port.String(),destination_port.String()
-}
-
-
-/*
-    Funcao responsavel por verificar se o numero de sequencia 
-    do pacote recebido e igual ao esperado
-*/
-func matchSeqNum(rcvpkt string, expectedseqnum int) (bool) {
-    //retira do pacote recebido o numero de sequencia
-    data := strings.Split(rcvpkt, "\n")
-    seqnum := ""
-    if (strings.Index(data[1], "_") != -1) {
-        seqnum = strings.Split(data[1], "_")[0]
-    } else {
-        seqnum = data[1]
-    }
-    //compara com o numero esperado
-    return seqnum == strconv.Itoa(expectedseqnum)
 }
 
 /*
@@ -69,9 +27,6 @@ func extract(rcvpkt string)(string,string,string,string){
     for i := 3; i < len(dados)-1; i++ {
         data_aplication += dados[i] + "\n"
     }  
-    print("\n-----data aplication----\n")
-    print(data_aplication)
-    print("\n-----------\n")
     if(strings.Contains(data_aplication,"LASTSEG")){
         data_aplication = data_aplication[:strings.Index(data_aplication,"LASTSEG")]
     }else{
@@ -79,65 +34,6 @@ func extract(rcvpkt string)(string,string,string,string){
     }
 
     return portas[0],portas[1],dados[1],data_aplication
-}
-
-/*
-    Envia dados para a camada de aplicação
-*/
-func deliverData(destination_port string, data string){
-    destination_address := ":" + destination_port
-    
-    //enviando conteúdo do pacote para a camada de aplicação
-    fmt.Println("Enviando pacote para a camada de aplicação...")
-    transport2app_port,err := net.ResolveTCPAddr("tcp",destination_address)
-    CheckError(err)
-    transport2app_connection, err := net.DialTCP("tcp", nil, transport2app_port)
-    CheckError(err)
-    _,err = transport2app_connection.Write([]byte(data))
-    CheckError(err)
-    transport2app_connection.Close()
-    fmt.Println("Pacote enviado com sucesso para a aplicação.")
-}
-
-/*
-    Monta o pacote ACK
-*/
-func makeACK(expectedseqnum string, source_port string, destination_port string)(pkt string){
-    fmt.Println("Construindo ACK: ", expectedseqnum)
-    valor,_ := strconv.Atoi(expectedseqnum)
-    if (valor < 10) {
-        pkt = destination_port + " " + source_port + "\n" + expectedseqnum + "_\n" + expectedseqnum + "_"
-    } else {
-        pkt = destination_port + " " + source_port + "\n" + expectedseqnum + "\n" + expectedseqnum
-    }
-
-    return pkt
-}
-
-/*
-    Envia pacote a camada física
-*/
-func ACKSend(segment string,transport2physical_address string){
-    fmt.Println("Enviando confirmacao de pacote para a camada física...")
-    physical_port, err := net.ResolveTCPAddr("tcp", transport2physical_address)
-    CheckError(err)
-    physical_connection, err := net.DialTCP("tcp", nil, physical_port)
-    for ; ; {
-        physical_connection, err = net.DialTCP("tcp", nil, physical_port)
-        if (err == nil) {
-            break
-        }
-    }    
-    CheckError(err)
-    _, err = physical_connection.Write([]byte(segment))
-    CheckError(err)
-    physical_connection.Close()
-}
-
-
-type AppContent struct {
-    SequenceNumber  int
-    Dado string
 }
 
 func convert(str []byte)(converted string){
@@ -151,61 +47,50 @@ func convert(str []byte)(converted string){
     return converted
 }
 
-type BySequenceNumber []AppContent
-
-func (a BySequenceNumber) Len() int           { return len(a) }
-func (a BySequenceNumber) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
-func (a BySequenceNumber) Less(i, j int) bool { return a[i].SequenceNumber < a[j].SequenceNumber }
-
 func main(){
     print := fmt.Println
 
-    network2transport_address := ":8013"
-    transport2app_address := ":8014"
+    // Configuração de enderecamento para os sockets
+    bottomlayer_address := ":8013"
+    uplayer_address := ":8014"
     
-    network2transport_port,err := net.ResolveTCPAddr("tcp",network2transport_address)
+    // Cria conexão para ouvir a camada inferior
+    network2transport_port,err := net.ResolveTCPAddr("tcp", bottomlayer_address)
     CheckError(err)
+    // Cria conexão para ouvir a camada superior
     network2transport_listener, err := net.ListenTCP("tcp", network2transport_port)
     CheckError(err)
 
+    // Cria Buffer para receber os segmentos 
     rcvpkt := make([]byte, 1024)
-    expectedseqnum := 1
-    app_content := []AppContent{}
     transport2app_content := ""
 
     /*
-        maquina de estados do destinatario
+        Maquina de estados do destinatario
     */
-    for {
+    for { 
         /*
-            Recebendo segmento da camada fisica
+            Aguarda Segmento da camada de rede
         */
-        print("Recebendo segmento da camada física...")
+        print("\n******** AGUARDANDO SEGMENTO DA CAMADA DE REDE ********\n")
         network2transport_connection, err := network2transport_listener.Accept() 
         CheckError(err)
         _,err = network2transport_connection.Read(rcvpkt)
-        //print("\n-------- Conteudo do pacote convertido em string -----\n")
-        //print(string(rcvpkt))
         rcvpkt_formated := convert(rcvpkt)
         CheckError(err)
-        //print("\n---- Conteúdo convertido ------\n")
-        //print(len(rcvpkt_formated)," ",rcvpkt_formated)
+        print("---------------------- Segmento -----------------------\n")
+        print(rcvpkt_formated)
+        /* 
+            Extrai os dados de aplicacao
+        */
         _,_,_,data := extract(rcvpkt_formated)
-        print("Dado extraido: \n",data)
-        app_content = append(app_content, AppContent{expectedseqnum, data})
-        /*if (matchSeqNum(string(rcvpkt), expectedseqnum)) {
-            print(string(rcvpkt))
-            print(string(rcvpkt[26:33]))
-            source_port,destination_port,_,data := extract(string(rcvpkt))
-            app_content = append(app_content, AppContent{expectedseqnum, data})
-            sndACK := makeACK(strconv.Itoa(expectedseqnum), source_port, destination_port)
-            ACKSend(sndACK, transport2physical_address)
-            expectedseqnum += 1
-        } else {
-            source_port,destination_port,_,_ := extract(string(rcvpkt))
-            sndACK := makeACK(strconv.Itoa(expectedseqnum-1), source_port, destination_port)
-            ACKSend(sndACK, transport2physical_address)
-        }*/
+        print("-------------- Dados extraido do segmento ---------------\n")
+        print(data)
+        print("---------------------------------------------------------")
+        transport2app_content += data
+
+        print("\n************************ OK ***************************\n")
+        // Verifica se o segmento recebido foi o ultimo
         if(strings.Contains(rcvpkt_formated,"LASTSEG")){
             index := strings.Index(rcvpkt_formated,"LASTSEG")
             print(rcvpkt_formated[index:index+len("LASTSEG")])
@@ -216,24 +101,19 @@ func main(){
         }
     }
 
-    sort.Sort(BySequenceNumber(app_content))
-    for i := 0; i < len(app_content); i++ {
-        transport2app_content += app_content[i].Dado
-    }
-    //deliverData(data,destination_port) <---------- enviar mensagem completa pra camada de aplicacao do servidor
-    print("\n\n\nCONTEUDO\n\n")
+    print("\n--------------------- CONTEUDO RECEBIDO -----------------------\n\n")
     print(transport2app_content)
-
+    print("--------------------------------------------------------------\n")
 
     //enviando conteúdo para a camada de aplicação
-    print("Enviando conteúdo para a camada de aplicação...")
-    transport2app_port,err := net.ResolveTCPAddr("tcp",transport2app_address)
+    print("ENVIA CONTEUDO PARA A CAMADA DE APLICACAO\n")
+    transport2app_port,err := net.ResolveTCPAddr("tcp",uplayer_address)
     CheckError(err)
     transport2app_connection, err := net.DialTCP("tcp", nil, transport2app_port)
     CheckError(err)
     _,err = transport2app_connection.Write([]byte(transport2app_content))
     CheckError(err)
     transport2app_connection.Close()
-    print("Pacote enviado com sucesso para a aplicação.")
+    print("DADOS ENVIADOS.\n")
 
 }
