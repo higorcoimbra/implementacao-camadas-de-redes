@@ -162,6 +162,7 @@ func main(){
 
     physical2transport_address := ":8006"
     transport2app_address := ":8007"
+    transport2physical_address := ":8010"
     
     physical2transport_port,err := net.ResolveTCPAddr("tcp",physical2transport_address)
     CheckError(err)
@@ -181,7 +182,6 @@ func main(){
         /*
             Recebendo segmento da camada fisica
         */
-
         print("Recebendo segmento da camada física...")
         physical2transport_connection, err := physical2transport_listener.Accept() 
         CheckError(err)
@@ -190,19 +190,19 @@ func main(){
         CheckError(err)
         _,_,_,data := extract(rcvpkt_formated)
         app_content = append(app_content, AppContent{expectedseqnum, data})
-        /*if (matchSeqNum(string(rcvpkt), expectedseqnum)) {
-            print(string(rcvpkt))
-            print(string(rcvpkt[26:33]))
+        if (matchSeqNum(string(rcvpkt_formated), expectedseqnum)) {
+            print(string(rcvpkt_formated))
+            print(string(rcvpkt_formated[26:33]))
             source_port,destination_port,_,data := extract(string(rcvpkt))
             app_content = append(app_content, AppContent{expectedseqnum, data})
             sndACK := makeACK(strconv.Itoa(expectedseqnum), source_port, destination_port)
             ACKSend(sndACK, transport2physical_address)
             expectedseqnum += 1
         } else {
-            source_port,destination_port,_,_ := extract(string(rcvpkt))
+            source_port,destination_port,_,_ := extract(string(rcvpkt_formated))
             sndACK := makeACK(strconv.Itoa(expectedseqnum-1), source_port, destination_port)
             ACKSend(sndACK, transport2physical_address)
-        }*/
+        }
 
         if(strings.Contains(rcvpkt_formated,"LASTSEG")){
             index := strings.Index(rcvpkt_formated,"LASTSEG")

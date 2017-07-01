@@ -165,7 +165,7 @@ while transferencia_aberta
 
 
 			# Caso seja um pacote ACK
-			if pkt[13] != 0
+			if pkt[27] != 0
 				print("ACK: ", pkt[13])
 				break
 			else

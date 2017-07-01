@@ -78,13 +78,16 @@ while (transferencia_aberta)
 		destino.print(byte.to_i(2).chr)
 
 		# Checa se o pacote e' um ack                              \\??
-		# if qtdByte == 14
-		# 	if byte.to_i(2).chr != "0"
-		# 		destino.close()
-		# 		tcpConnect(host,physical2transport_port,File.read("destino"))
-		# 		destino = File.new("destino", "w")
-		# 	end
-		# end
+		if qtdByte == 14
+			if byte.to_i(2).chr != "0"
+				destino.close()
+				acks = File.new("../transporte/acks.txt", "w")
+				acks.print(File.read("destino"))
+				acks.close()
+				#tcpConnect(host,8015,File.read("destino"))
+				destino = File.new("destino", "w")
+			end
+		end
 		qtdByte += 1
 
 		if final == "TRAILER" or final == "LASTSEG"
